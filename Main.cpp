@@ -1,27 +1,17 @@
 ﻿#include <iostream>
 #include <filesystem>
 #include <SFML/Graphics.hpp>
+#include "Game.h"
 
 
 int main()
 {
     // Create the main window
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Mario Game");
-    // Load a sprite to display
-    //sf::Texture texture;
-    //if (!texture.loadFromFile("cute_image.jpg"))
-        //return EXIT_FAILURE;
-    //sf::Sprite sprite(texture);
-    // Create a graphical text to display
-    sf::Font font;
-    if (!font.loadFromFile("../assets/font.ttf"))
-    {
-        std::cout << "Unable to load the font file from " << std::filesystem::current_path() << std::endl;
-        std::cin.get();
-        return EXIT_FAILURE;
-    }
+    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Mario Game");
+    window.setVerticalSyncEnabled(true);
 
-    sf::Text text("Welcome to the Mario ", font, 40);
+    Game game;
+   
     // Start the game loop
     while (window.isOpen())
     {
@@ -37,9 +27,8 @@ int main()
         window.clear();
         // Draw the sprite
         //window.draw(sprite);
-        // 
-        // Draw the string
-        window.draw(text);
+
+        game.drawBackground(window);
 
         // Update the window
         window.display();
