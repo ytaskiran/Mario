@@ -20,6 +20,6 @@ public:
 private:
 	const float SPEED = 5.0;
 	void initializeMario();
-
+	void checkSlide();
 	int liveCount;
 };

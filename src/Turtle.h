@@ -21,14 +21,16 @@ public:
 	float vy;							// Vertical speed
 
 	void resetState();
+	void setSurprised();
 
 private:
-	float speed;
+	float speed; 
 	Direction _prevDir;
 	void initializeTurtle();
 	const int STEP = 1;
-
-	bool timeStarted;
+	bool waitedOneSecond;
+	bool surprised;
+	bool flippedOver;
 	sf::Clock clock;
 	bool isFalling;
 	bool isJumping;

@@ -24,30 +24,35 @@ void Turtle::initializeTurtle()
 	vy = 0;
 	isFalling = false;
 	isJumping = false;
-	timeStarted = false;
+	flippedOver = false;
 	sprite.setTexture(textures[state]);
 	heading = Direction::FIXED;
 	_prevDir = Direction::FIXED;
 	// position iniatilize et. Position dýþardan alabilirsin. Bu durumda initialize fonksiyonunu dýþardan çaðýrýrýz.
 }
 
+// Update the Turtle velocity, state and heading. Is is called in every frame.
 void Turtle::update(Direction dir)
 {
 	Direction _prevDir = heading;
 	heading = dir;
 
+	// Checks turtle is falling or not. If falling, turtle continue to fall, until it leaves the frame.
 	if (isFalling) 
 	{
 		vx = 0;
 		vy += GRAVITY;
 		return;
 	}
+
+	// Checks the turtle is jumping. If jumping, turtle y velocity increase as gravity, anf x velocit will be same.
 	else if (isJumping)
 	{
 		vy += GRAVITY;
 		return;
 	}
 
+	// If the turtle not jumping or falling, state diagram works.
 	switch (state)
 	{
 	case 1:
@@ -121,21 +126,45 @@ void Turtle::update(Direction dir)
 		break;
 	case 4:
 		// Þaþýrma durumu. Yön deðiþitirecek.
-		vx = -vx;
+		if (surprised)
+		{
+			if (clock.getElapsedTime().asSeconds() >= 1)
+			{
+				vx = -vx;
+				if (vx > 0)
+				{
+					dir = Direction::RIGHT;
+					heading = dir;
+				}
+				else 
+				{
+					dir = Direction::LEFT;
+					heading = dir;
+				}
+				state = 1;
+			}
+		}
+		else 
+		{
+			surprised = true;
+			clock.restart();
+		}
+		
 		break;
 	case 5:
-		if (timeStarted) 
+		if (flippedOver) 
 		{
 			if (clock.getElapsedTime().asSeconds() >= 8)
 			{
 				state = 1;
-				timeStarted = false;
+				speed += 30; // Keep moving faster as it has been aggravated
+				flippedOver = false;
 			}
 			
 		}
 		else 
 		{
-			timeStarted = true;
+			flippedOver = true;
 			clock.restart();
 		}
 		break;
@@ -151,12 +180,14 @@ void Turtle::update(Direction dir)
 	}
 }
 
+// Moves the turtle one interation, according to the velocity.
 void Turtle::move()
 {
 	sprite.move(vx, vy);
 	pos = sprite.getPosition();
 }
 
+// Sets the y velocity and isJumping variable. It is used to start the jumping state.
 void Turtle::jump(bool down)
 {
 	if (down)
@@ -170,15 +201,23 @@ void Turtle::jump(bool down)
 	isJumping = true;
 }
 
+// Sets the isFalling variable true. It is used to fall Turtle. 
 void Turtle::fall(void)
 {
 	isFalling = true;
 }
 
+// Resets the turtle state and y velocity. It is used to exit turtle from jump state
 void Turtle::resetState()
 {
 	state = 1;
 	vy = 0;
 	vx = 0;
 	isJumping = false;
+}
+
+// Sets the turtle state surprised state. It is used when two turtle touch each other.
+void Turtle::setSurprised()
+{
+	state = 4;
 }

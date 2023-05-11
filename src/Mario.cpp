@@ -15,6 +15,7 @@ Mario::Mario(sf::RenderWindow* window) : Object(window)
 	}
 }
 
+// Update the state and velocity of the Mario, according to the given direction.
 void Mario::update(Direction dir)
 {
 	Direction _prevDir = heading;
@@ -148,6 +149,8 @@ void Mario::update(Direction dir)
 	}
 	}
 }
+
+// Sets the Mario y velocity and state in jump state.
 void Mario::jump(bool down)
 {
 	if (down)
@@ -161,11 +164,13 @@ void Mario::jump(bool down)
 	state = 6;
 }
 
+// Set the Mario State to state 7 (fall state)
 void Mario::fall(void)
 {
 	state = 7;
 }
 
+// Reset the Mario state. It is used in Game logic to exit Mario from jumping state.
 void Mario::resetState()
 {
 	state = 1;
@@ -173,6 +178,7 @@ void Mario::resetState()
 	vx = 0;
 }
 
+// Restart the mario if Mario dies.
 bool Mario::restart()
 {
 	if (liveCount == 0)
@@ -186,7 +192,7 @@ bool Mario::restart()
 	}
 }
 
-
+// Initializes variables of Mario class. It is used in Constructor and restart functions.
 void Mario::initializeMario() 
 {
 	pos.x = 0.0f;
@@ -202,11 +208,17 @@ void Mario::initializeMario()
 
 };
 
+// It moves the Mario object, according to Mario velocity.
 void Mario::move(void)
 {
 	sprite.move(vx, vy);
 	pos = sprite.getPosition();
 }
 
+// Not implemented yet. It can be also implement in game logic.
+void Mario::checkSlide() 
+{
+	return;
+}
 
 
