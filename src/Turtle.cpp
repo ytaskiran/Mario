@@ -1,5 +1,5 @@
 #include "Turtle.h"
-Turtle::Turtle(sf::RenderWindow* window) : Object(window)
+Turtle::Turtle()
 {
 	char path[64];
 	initializeTurtle();

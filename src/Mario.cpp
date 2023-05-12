@@ -1,14 +1,14 @@
 #include <Mario.h>
 
 
-Mario::Mario(sf::RenderWindow* window) : Object(window)
+Mario::Mario()
 {
 	liveCount = 3;
 	initializeMario();
 	
 	char path[64];
 
-	for (int i = 0; i<8 ; i ++)
+	for (int i = 1; i < 8; i++)
 	{
 		sprintf_s(path, "../assets/mario%d.png", i);
 		textures[i].loadFromFile(path);
@@ -220,5 +220,4 @@ void Mario::checkSlide()
 {
 	return;
 }
-
 

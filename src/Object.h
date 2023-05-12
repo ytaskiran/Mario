@@ -7,16 +7,16 @@
 class Object
 {
 public:
-	Object(sf::RenderWindow* window);		// Constructor
+	Object();								// Constructor
 	void setPosition(sf::Vector2f pos);		// Sets position of the object
 	sf::Vector2f getPosition();				// Gets position of the object
-	sf::FloatRect boundingBox(void);			// Returns the bounding rectangle of the object texture
+	sf::FloatRect boundingBox(void);		// Returns the bounding rectangle of the object texture
 	void draw(sf::RenderWindow& window);	// Draws current the object texture to screen
 	
 	// Virtual functions
-	virtual void move(void);						// Abstract method that will be overridden
-	virtual void fall(void);						// Abstract method that will be overridden
-	virtual void jump(bool down);					// Abstract method that will be overridden
+	virtual void move(void);				// Abstract method that will be overridden
+	virtual void fall(void);				// Abstract method that will be overridden
+	virtual void jump(bool down);			// Abstract method that will be overridden
 
 	sf::Sprite sprite;						// Sprite for the object
 	int state;								// Current animation state of the object (one of animation states)
@@ -32,9 +32,7 @@ private:
 protected:
 	const float GRAVITY = 1;				// Constant gravity value used in objects.
 	sf::Vector2f pos;						// Current position of object on screen
-	Direction heading;							// Facing direction of object
+	Direction heading;						// Facing direction of object
 	sf::Texture textures[8];				// Textures of Object (there are 8 textures total for Mario and 6 textures for Turtle)
-	sf::RenderWindow* window;				// Pointer to render window
-
-
+	//sf::RenderWindow* window_;				// Pointer to render window
 };

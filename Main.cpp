@@ -10,7 +10,7 @@ int main()
     sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Mario Game");
     window.setVerticalSyncEnabled(true);
 
-    Game game;
+    Game game(&window);
    
     // Start the game loop
     while (window.isOpen())
@@ -28,7 +28,8 @@ int main()
         // Draw the sprite
         //window.draw(sprite);
 
-        game.drawBackground(window);
+        game.drawBackground();
+        game.createMario();
 
         // Update the window
         window.display();

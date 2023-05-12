@@ -1,13 +1,18 @@
 #include "Game.h"
 
-Game::Game()
+Game::Game(sf::RenderWindow* window) : window_(window)
 {
 
 }
 
-void Game::drawBackground(sf::RenderWindow& window)
+void Game::drawBackground()
 {
-    map_.drawMap(window);
+    map_.drawMap(window_);
+}
+
+void Game::createMario()
+{
+    objects_.emplace_back(Mario());
 }
 
 int Game::mainMenu()
@@ -102,7 +107,7 @@ void TileMap::initializeMap()
     }
 }
 
-void TileMap::drawMap(sf::RenderWindow& window)
+void TileMap::drawMap(sf::RenderWindow* window)
 {
     const size_t ROWS = tile_map_.size();
     const size_t COLS = tile_map_[0].size();
@@ -126,7 +131,7 @@ void TileMap::drawMap(sf::RenderWindow& window)
                 sprite.setTexture(floor_texture_);
                 sprite.setTextureRect(sf::IntRect(c * TILE_SIZE, TILE_SIZE * (r - TILE_HEIGHT + FLOOR_HEIGHT), TILE_SIZE, TILE_SIZE));
                 sprite.setPosition(c * TILE_SIZE, r * TILE_SIZE);
-                window.draw(sprite);
+                window->draw(sprite);
             }
 
             else if (tile_map_[r][c] == TileType::Brick)
@@ -134,7 +139,7 @@ void TileMap::drawMap(sf::RenderWindow& window)
                 sprite.setTexture(brick_texture_);
                 sprite.setScale(0.5, 0.5);
                 sprite.setPosition(c * TILE_SIZE, r * TILE_SIZE);
-                window.draw(sprite);
+                window->draw(sprite);
             }
 
             else if (tile_map_[r][c] == TileType::Pipe && c < 7 && !left_pipe)
@@ -145,7 +150,7 @@ void TileMap::drawMap(sf::RenderWindow& window)
                 sprite.setRotation(180.0);
                 sprite.setPosition(c * TILE_SIZE + (pipe_texture_.getSize().x / 2), r * TILE_SIZE + (pipe_texture_.getSize().y / 2));
                 left_pipe = true;
-                window.draw(sprite);
+                window->draw(sprite);
             }
 
             else if (tile_map_[r][c] == TileType::Pipe && c >= TILE_WIDTH - 7 && !right_pipe)
@@ -154,7 +159,7 @@ void TileMap::drawMap(sf::RenderWindow& window)
                 sprite.setTextureRect(sf::IntRect(0, 0, pipe_texture_.getSize().x, pipe_texture_.getSize().y));
                 sprite.setPosition(c * TILE_SIZE, r * TILE_SIZE);
                 right_pipe = true;
-                window.draw(sprite);
+                window->draw(sprite);
             }
 
             else if (tile_map_[r][c] == TileType::PipeS && c == 0 && !left_pipe_s)
@@ -164,8 +169,7 @@ void TileMap::drawMap(sf::RenderWindow& window)
                 sprite.setScale(0.5, 0.5);
                 sprite.setPosition(c * TILE_SIZE, (r - 2) * TILE_SIZE);
                 left_pipe_s = true;
-
-                window.draw(sprite);
+                window->draw(sprite);
             }
 
             else if (tile_map_[r][c] == TileType::PipeS && c == TILE_WIDTH - 1 && !right_pipe_s)
@@ -173,16 +177,10 @@ void TileMap::drawMap(sf::RenderWindow& window)
                 sprite.setTexture(pipe_s_texture_);
                 sprite.setTextureRect(sf::IntRect(0, 0, pipe_s_texture_.getSize().x, pipe_s_texture_.getSize().y));
                 sprite.setScale(-0.5, 0.5);
-                std::cout << c << std::endl;
-                std::cout << TILE_WIDTH << std::endl;
                 sprite.setPosition((c + 1) * TILE_SIZE, (r - 2) * TILE_SIZE);
                 right_pipe_s = true;
-                window.draw(sprite);
+                window->draw(sprite);
             }
-
-            //sprite.setOrigin(0.0, 0.0);
-            //sprite.setScale(1.0, 1.0);
-            //sprite.setRotation(0.0);
         }
     }
 }

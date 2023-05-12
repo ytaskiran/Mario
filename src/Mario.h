@@ -6,17 +6,18 @@
 class Mario : public Object
 {
 public:
-	Mario(sf::RenderWindow* window);	// Constructor
+	Mario();		// Constructor
 
-	void update(Direction direction);						// Moves Mario left or right
-	void jump(bool down);				// Makes Mario jump (if down is true, Mario jumps down off the edge of a floor, otherwise he jumps up)
-	void fall(void);					// Makes Mario fall straight down when he dies
+	void update(Direction direction);		// Moves Mario left or right
+	virtual void jump(bool down) override;	// Makes Mario jump (if down is true, Mario jumps down off the edge of a floor, otherwise he jumps up)
+	virtual void fall(void) override;		// Makes Mario fall straight down when he dies
+	virtual void move(void) override;
 	void resetState();
 	bool restart();
 
-	void move(void);
-	float vx;							// Horizontal speed 
-	float vy;							// Vertical speed
+	float vx;								// Horizontal speed 
+	float vy;								// Vertical speed
+
 private:
 	const float SPEED = 5.0;
 	void initializeMario();

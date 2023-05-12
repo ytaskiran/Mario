@@ -1,8 +1,8 @@
 #include <Object.h>
 
 
-Object::Object(sf::RenderWindow* window) {
-	this->window = window;
+Object::Object()
+{
 
 }
 
@@ -32,3 +32,17 @@ void Object::draw(sf::RenderWindow& window)
 	window.draw(sprite);
 }
 
+void Object::move()
+{
+
+}
+
+void Object::fall()
+{
+
+}
+
+void Object::jump(bool down)
+{
+
+}

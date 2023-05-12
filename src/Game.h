@@ -26,7 +26,7 @@ class TileMap
 {
 public:
 	TileMap();
-	void drawMap(sf::RenderWindow& window);
+	void drawMap(sf::RenderWindow* window);
 
 private:
 	void initializeMap();
@@ -49,8 +49,8 @@ private:
 class Game
 {
 public:
-	Game();													// Constructor
-	void drawBackground(sf::RenderWindow& window);			// Draws the background objects
+	Game(sf::RenderWindow* window);							// Constructor
+	void drawBackground();									// Draws the background objects
 	void createMario();
 	void createTurtles(int);
 	bool onFloor(Object* obj);								// Checks if object is touching a floor surface
@@ -59,8 +59,9 @@ public:
 	int mainMenu();
 
 private:
+	sf::RenderWindow* window_;
 	TileMap map_{};
-	std::list<Object> objects;
+	std::list<Object> objects_{};
 };
 
 
