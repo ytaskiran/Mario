@@ -11,7 +11,7 @@ public:
 	void setPosition(sf::Vector2f pos);		// Sets position of the object
 	sf::Vector2f getPosition();				// Gets position of the object
 	sf::FloatRect boundingBox(void);		// Returns the bounding rectangle of the object texture
-	void draw(sf::RenderWindow& window);	// Draws current the object texture to screen
+	void draw(sf::RenderWindow* window);	// Draws current the object texture to screen
 	
 	// Virtual functions
 	virtual void move(void);				// Abstract method that will be overridden

@@ -195,8 +195,8 @@ bool Mario::restart()
 // Initializes variables of Mario class. It is used in Constructor and restart functions.
 void Mario::initializeMario() 
 {
-	pos.x = 0.0f;
-	pos.y = 0.0f;
+	pos.x = 50.0f;
+	pos.y = 50.0f;
 
 	heading = Direction::FIXED;
 

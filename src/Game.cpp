@@ -8,6 +8,12 @@ Game::Game(sf::RenderWindow* window) : window_(window)
 void Game::drawBackground()
 {
     map_.drawMap(window_);
+
+    for (auto object : objects_)
+    {
+        object.move();
+        object.draw(window_);
+    }
 }
 
 void Game::createMario()

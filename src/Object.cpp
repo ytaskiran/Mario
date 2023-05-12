@@ -26,10 +26,10 @@ sf::FloatRect Object::boundingBox(void)
 	return sprite.getGlobalBounds();
 }
 
-// Draws the object in given window onject.
-void Object::draw(sf::RenderWindow& window) 
+// Draws the object with given window pointer.
+void Object::draw(sf::RenderWindow* window) 
 {
-	window.draw(sprite);
+	window->draw(sprite);
 }
 
 void Object::move()

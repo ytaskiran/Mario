@@ -11,6 +11,7 @@ int main()
     window.setVerticalSyncEnabled(true);
 
     Game game(&window);
+    game.createMario();
    
     // Start the game loop
     while (window.isOpen())
@@ -29,7 +30,6 @@ int main()
         //window.draw(sprite);
 
         game.drawBackground();
-        game.createMario();
 
         // Update the window
         window.display();
