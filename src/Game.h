@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <iostream>
+#include <vector>
+#include <list>
 #include "Object.h"
 #include "Mario.h"
 #include "Turtle.h"
@@ -14,7 +16,9 @@ enum class TileType
 {
 	Empty,
 	Floor,
-	Brick
+	Brick,
+	Pipe,
+	PipeS
 };
 
 
@@ -28,9 +32,11 @@ private:
 	void initializeMap();
 
 	std::vector<std::vector<TileType>> tile_map_;
-	std::vector<std::vector<size_t>> brick_locations_;
+
 	sf::Texture floor_texture_;
 	sf::Texture brick_texture_;
+	sf::Texture pipe_texture_;
+	sf::Texture pipe_s_texture_;
 
 	const size_t TILE_SIZE = 15;
 	const size_t FLOOR_HEIGHT = 4; // 4 * TILE_SIZE
@@ -45,12 +51,16 @@ class Game
 public:
 	Game();													// Constructor
 	void drawBackground(sf::RenderWindow& window);			// Draws the background objects
+	void createMario();
+	void createTurtles(int);
 	bool onFloor(Object* obj);								// Checks if object is touching a floor surface
 	bool checkCollusion(Turtle* t, Mario* m, int& side);	// Checks if Mario has hit a turtle and from which side
+	void marioFail();
 	int mainMenu();
 
 private:
 	TileMap map_{};
+	std::list<Object> objects;
 };
 
 
