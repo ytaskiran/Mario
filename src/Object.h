@@ -14,9 +14,9 @@ public:
 	void draw(sf::RenderWindow& window);	// Draws current the object texture to screen
 	
 	// Virtual functions
-	virtual void move(void) = 0;						// Abstract method that will be overridden
-	virtual void fall(void) = 0;						// Abstract method that will be overridden
-	virtual void jump(bool down) = 0;					// Abstract method that will be overridden
+	virtual void move(void);						// Abstract method that will be overridden
+	virtual void fall(void);						// Abstract method that will be overridden
+	virtual void jump(bool down);					// Abstract method that will be overridden
 
 	sf::Sprite sprite;						// Sprite for the object
 	int state;								// Current animation state of the object (one of animation states)
