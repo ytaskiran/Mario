@@ -38,6 +38,13 @@ int Game::mainMenu()
     return 0;
 }
 
+Game::~Game()
+{
+    for (auto object : objects_)
+    {
+        delete object;
+    }
+}
 
 TileMap::TileMap()
 {
@@ -192,3 +199,4 @@ void TileMap::drawMap(sf::RenderWindow* window)
         }
     }
 }
+
