@@ -30,7 +30,13 @@ sf::FloatRect Object::boundingBox(void)
 void Object::draw(sf::RenderWindow* window, float x_scale, float y_scale) 
 {
 	sprite.setScale(x_scale, y_scale);
+	sprite.setPosition(pos);
 	window->draw(sprite);
+}
+
+void Object::update(Direction direction)
+{
+
 }
 
 void Object::move()

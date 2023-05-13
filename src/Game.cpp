@@ -22,7 +22,6 @@ void Game::drawBackground()
             object->draw(window_, 1.0, 1.0);
         }
     }
-
 }
 
 void Game::createMario()
@@ -45,9 +44,32 @@ int Game::mainMenu()
     return 0;
 }
 
+void Game::updateObjects()
+{
+    for (Object* object : objects_)
+    {
+        if (dynamic_cast<Mario*>(object) != nullptr)
+        {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            {
+                object->update(Object::Direction::LEFT);
+            }
+            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            {
+                object->update(Object::Direction::RIGHT);
+            }
+            else
+            {
+                object->update(Object::Direction::FIXED);
+            }
+        }
+    }
+    
+}
+
 Game::~Game()
 {
-    for (auto object : objects_)
+    for (Object* object : objects_)
     {
         delete object;
     }
