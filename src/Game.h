@@ -57,7 +57,7 @@ public:
 	bool checkCollusion(Turtle* t, Mario* m, int& side);	// Checks if Mario has hit a turtle and from which side
 	void marioFail();
 	int mainMenu();
-
+	Mario* mario;
 private:
 	sf::RenderWindow* window_;
 	TileMap map_{};

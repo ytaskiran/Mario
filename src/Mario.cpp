@@ -137,7 +137,7 @@ void Mario::update(Direction dir)
 		vy += GRAVITY; // Ekranýn aþaðýsýna düþmeye devam etsin. // Hýzýný arttýralým.
 		break;
 	}
-
+	}
 	_prevDir = dir;
 	sprite.setTexture(textures[state]);
 
@@ -147,7 +147,7 @@ void Mario::update(Direction dir)
 		int height = sprite.getTexture()->getSize().y;
 		sprite.setTextureRect(sf::IntRect(width, 0, -width, height));
 	}
-	}
+	
 }
 
 // Sets the Mario y velocity and state in jump state.

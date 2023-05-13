@@ -19,7 +19,8 @@ void Game::drawBackground()
 
 void Game::createMario()
 {
-    objects_.emplace_back(new Mario());
+    mario = new Mario();
+    objects_.emplace_back(mario);
 }
 
 int Game::mainMenu()
