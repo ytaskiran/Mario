@@ -58,6 +58,8 @@ public:
 	void marioFail();
 	int mainMenu();
 	Mario* mario;
+	~Game();
+
 private:
 	sf::RenderWindow* window_;
 	TileMap map_{};

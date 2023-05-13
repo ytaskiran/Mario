@@ -29,6 +29,20 @@ int main()
         // Draw the sprite
         //window.draw(sprite);
 
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        {
+            game.mario->update(Object::Direction::LEFT);
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        {
+            game.mario->update(Object::Direction::RIGHT);
+        }
+        else
+        {
+            game.mario->update(Object::Direction::FIXED);
+        }
+
+
         game.drawBackground();
 
         // Update the window
