@@ -11,14 +11,15 @@ void Game::drawBackground()
 
     for (auto object : objects_)
     {
-        object.move();
-        object.draw(window_);
+        object->move();
+        object->draw(window_);
     }
+
 }
 
 void Game::createMario()
 {
-    objects_.emplace_back(Mario());
+    objects_.emplace_back(new Mario());
 }
 
 int Game::mainMenu()

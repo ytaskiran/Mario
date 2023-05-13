@@ -61,7 +61,7 @@ public:
 private:
 	sf::RenderWindow* window_;
 	TileMap map_{};
-	std::list<Object> objects_{};
+	std::list<Object*> objects_{};
 };
 
 

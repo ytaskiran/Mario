@@ -3,9 +3,7 @@
 
 Mario::Mario()
 {
-	liveCount = 3;
-	initializeMario();
-	
+	liveCount = 3;	
 	char path[64];
 
 	for (int i = 1; i < 8; i++)
@@ -13,6 +11,8 @@ Mario::Mario()
 		sprintf_s(path, "../assets/mario%d.png", i);
 		textures[i].loadFromFile(path);
 	}
+
+	initializeMario();
 }
 
 // Update the state and velocity of the Mario, according to the given direction.
@@ -205,7 +205,6 @@ void Mario::initializeMario()
 
 	state = 1;
 	sprite.setTexture(textures[state]);
-
 };
 
 // It moves the Mario object, according to Mario velocity.
