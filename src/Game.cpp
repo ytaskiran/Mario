@@ -9,18 +9,25 @@ void Game::drawBackground()
 {
     map_.drawMap(window_);
 
-    for (auto object : objects_)
+    for (Object* object : objects_)
     {
         object->move();
-        object->draw(window_);
+        
+        if (dynamic_cast<Mario*>(object) != nullptr)
+        {
+            object->draw(window_, 0.5, 0.5);
+        }
+        else
+        {
+            object->draw(window_, 1.0, 1.0);
+        }
     }
 
 }
 
 void Game::createMario()
 {
-    mario = new Mario();
-    objects_.emplace_back(mario);
+    objects_.emplace_back(new Mario());
 }
 
 int Game::mainMenu()

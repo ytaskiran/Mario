@@ -27,8 +27,9 @@ sf::FloatRect Object::boundingBox(void)
 }
 
 // Draws the object with given window pointer.
-void Object::draw(sf::RenderWindow* window) 
+void Object::draw(sf::RenderWindow* window, float x_scale, float y_scale) 
 {
+	sprite.setScale(x_scale, y_scale);
 	window->draw(sprite);
 }
 
