@@ -29,8 +29,8 @@ public:
 	sf::Sprite sprite;									// Sprite for the object
 	int state;											// Current animation state of the object (one of animation states)
 
-	
-private:
+	float vx;											// Horizontal speed 
+	float vy;											// Vertical speed
 
 protected:
 	const float GRAVITY = 1;							// Constant gravity value used in objects.

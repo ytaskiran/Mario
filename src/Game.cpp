@@ -10,12 +10,14 @@ void Game::drawBackground()
     map_.drawMap(window_);
 
     for (Object* object : objects_)
-    {
-        object->move();
-        
+    {        
         if (dynamic_cast<Mario*>(object) != nullptr)
         {
-            object->draw(window_, 0.6, 0.6);
+            // TODO looks bad, fix it
+            if (object->vx > 0)
+                object->draw(window_, -0.6, 0.6);
+            else
+                object->draw(window_, 0.6, 0.6);
         }
         else
         {
@@ -44,24 +46,66 @@ int Game::mainMenu()
     return 0;
 }
 
+bool Game::onFloor(Object* object)
+{
+    float x_pixel = object->getPosition().x + object->vx;
+    float y_pixel = object->getPosition().y + object->vy;
+
+    float tile_x = x_pixel / TileMap::TILE_SIZE;
+    float tile_y = y_pixel / TileMap::TILE_SIZE;
+
+    std::cout << "Col: " << tile_x << std::endl;
+    std::cout << "Row: " << tile_y << std::endl;
+    std::cout << "\n\n";
+
+    // below functionality can be exttended and added to general collision check TODO
+
+    // bottom left tile
+    size_t tile0_x = floor(tile_x);
+    size_t tile0_y = ceil(tile_y);
+
+    // bottom right tile
+    size_t tile1_x = ceil(tile_x);
+    size_t tile1_y = ceil(tile_y);
+
+    // take care of the case when index is out of range TODO
+    if (map_.getTile(tile0_y, tile0_x) == TileType::Floor or map_.getTile(tile1_y, tile1_x) == TileType::Floor)
+    {
+        object->vy = 0;
+        return true;
+    }
+
+    return false;
+}
+
 void Game::updateObjects()
 {
     for (Object* object : objects_)
     {
+        auto pos = object->getPosition();
         if (dynamic_cast<Mario*>(object) != nullptr)
         {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             {
                 object->update(Object::Direction::LEFT);
+                if (pos.x + object->vx <= 0) object->vx = 0;
             }
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
             {
                 object->update(Object::Direction::RIGHT);
+                if (pos.x + object->vx >= SCREEN_WIDTH - 30) object->vx = 0;
+            }
+            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+            {
+                object->jump(false);
             }
             else
             {
                 object->update(Object::Direction::FIXED);
             }
+
+            onFloor(object);
+            object->move();
         }
     }
     
@@ -229,3 +273,7 @@ void TileMap::drawMap(sf::RenderWindow* window)
     }
 }
 
+TileType TileMap::getTile(size_t row, size_t col)
+{
+    return tile_map_[row][col];
+}

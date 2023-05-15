@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <list>
+#include <cmath>
 #include "Object.h"
 #include "Mario.h"
 #include "Turtle.h"
@@ -27,6 +28,9 @@ class TileMap
 public:
 	TileMap();
 	void drawMap(sf::RenderWindow* window);
+	TileType getTile(size_t row, size_t col);
+
+	const static size_t TILE_SIZE = 15;
 
 private:
 	void initializeMap();
@@ -38,9 +42,7 @@ private:
 	sf::Texture pipe_texture_;
 	sf::Texture pipe_s_texture_;
 
-	const size_t TILE_SIZE = 15;
 	const size_t FLOOR_HEIGHT = 4; // 4 * TILE_SIZE
-
 	const size_t TILE_WIDTH = SCREEN_WIDTH / TILE_SIZE;
 	const size_t TILE_HEIGHT = SCREEN_HEIGHT / TILE_SIZE;
 };
