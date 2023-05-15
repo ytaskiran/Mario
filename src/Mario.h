@@ -21,4 +21,5 @@ private:
 	void initializeMario();
 	void checkSlide();
 	int liveCount;
+	bool jumping;
 };

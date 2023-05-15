@@ -141,27 +141,24 @@ void Mario::update(Direction dir)
 	_prevDir = dir;
 	sprite.setTexture(textures[state]);
 
-	if (heading  != _prevDir)
-	{
-		int width = sprite.getTexture()->getSize().x;
-		int height = sprite.getTexture()->getSize().y;
-		sprite.setTextureRect(sf::IntRect(width, 0, -width, height));
-	}
-	
 }
 
 // Sets the Mario y velocity and state in jump state.
 void Mario::jump(bool down)
 {
-	if (down)
+	if (!jumping) 
 	{
-		vy = GRAVITY;
+		if (down)
+		{
+			vy = GRAVITY;
+		}
+		else
+		{
+			vy = -15;
+		}
+		state = 6;
+		jumping = true;
 	}
-	else
-	{
-		vy = -20;
-	}
-	state = 6;
 }
 
 // Set the Mario State to state 7 (fall state)
@@ -176,6 +173,7 @@ void Mario::resetState()
 	state = 1;
 	vy = 0;
 	vx = 0;
+	jumping = false;
 }
 
 // Restart the mario if Mario dies.
@@ -199,7 +197,7 @@ void Mario::initializeMario()
 	pos.y = 485.0f;
 
 	heading = Direction::FIXED;
-
+	jumping = false;
 	vx = 0;
 	vy = 0;
 
