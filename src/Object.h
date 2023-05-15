@@ -21,7 +21,7 @@ public:
 	};
 	
 	// Virtual functions
-	virtual void update(Direction direction);							// Abstract method that will be overridden
+	virtual void update(Direction direction);			// Abstract method that will be overridden
 	virtual void move(void);							// Abstract method that will be overridden
 	virtual void fall(void);							// Abstract method that will be overridden
 	virtual void jump(bool down);						// Abstract method that will be overridden
@@ -33,9 +33,9 @@ public:
 private:
 
 protected:
-	const float GRAVITY = 1;				// Constant gravity value used in objects.
-	sf::Vector2f pos;						// Current position of object on screen
-	Direction heading;						// Facing direction of object
-	sf::Texture textures[8];				// Textures of Object (there are 8 textures total for Mario and 6 textures for Turtle)
-	//sf::RenderWindow* window_;				// Pointer to render window
+	const float GRAVITY = 1;							// Constant gravity value used in objects.
+	sf::Vector2f pos;									// Current position of object on screen
+	Direction heading;									// Facing direction of object
+	sf::Texture textures[8];							// Textures of Object (there are 8 textures total for Mario and 6 textures for Turtle)
+	//sf::RenderWindow* window_;						// Pointer to render window
 };

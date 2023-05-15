@@ -196,7 +196,7 @@ bool Mario::restart()
 void Mario::initializeMario() 
 {
 	pos.x = 400.0f;
-	pos.y = 600.0f;
+	pos.y = 485.0f;
 
 	heading = Direction::FIXED;
 
@@ -205,6 +205,7 @@ void Mario::initializeMario()
 
 	state = 1;
 	sprite.setTexture(textures[state]);
+	sprite.setPosition(pos);
 };
 
 // It moves the Mario object, according to Mario velocity.

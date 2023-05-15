@@ -15,7 +15,7 @@ void Game::drawBackground()
         
         if (dynamic_cast<Mario*>(object) != nullptr)
         {
-            object->draw(window_, 0.5, 0.5);
+            object->draw(window_, 0.6, 0.6);
         }
         else
         {
