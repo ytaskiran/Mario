@@ -24,6 +24,7 @@ public:
 	virtual void update(Direction direction);			// Abstract method that will be overridden
 	virtual void move(void);							// Abstract method that will be overridden
 	virtual void fall(void);							// Abstract method that will be overridden
+	virtual void resetState();   						// Abstract method that will be overridden
 	virtual void jump(bool down);						// Abstract method that will be overridden
 
 	sf::Sprite sprite;									// Sprite for the object

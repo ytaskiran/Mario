@@ -49,6 +49,11 @@ void Object::fall()
 
 }
 
+void Object::resetState()
+{
+
+}
+
 void Object::jump(bool down)
 {
 

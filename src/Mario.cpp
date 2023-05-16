@@ -148,13 +148,14 @@ void Mario::jump(bool down)
 {
 	if (!jumping) 
 	{
+		// TODO how does this down var help?
 		if (down)
 		{
 			vy = GRAVITY;
 		}
 		else
 		{
-			vy = -15;
+			vy = -12;
 		}
 		state = 6;
 		jumping = true;
@@ -217,5 +218,10 @@ void Mario::move(void)
 void Mario::checkSlide() 
 {
 	return;
+}
+
+bool Mario::isJumping()
+{
+	return jumping;
 }
 

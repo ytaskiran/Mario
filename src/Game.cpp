@@ -77,18 +77,22 @@ int Game::mainMenu()
 
 bool Game::onFloor(Object* object)
 {
-    float x_pixel = object->getPosition().x + object->vx;
-    float y_pixel = object->getPosition().y + object->vy;
+    float x_pixel{};
+    float y_pixel{};
+    if (object->vx > 0)
+        x_pixel = object->getPosition().x + object->sprite.getGlobalBounds().width;
+    else
+        x_pixel = object->getPosition().x;
+    if (object->vy > 0)
+        y_pixel = object->getPosition().y + object->sprite.getGlobalBounds().height;
+    else
+        y_pixel = object->getPosition().y;
 
     float tile_x = x_pixel / TileMap::TILE_SIZE;
     float tile_y = y_pixel / TileMap::TILE_SIZE;
 
-    std::cout << "Col: " << tile_x << std::endl;
-    std::cout << "Row: " << tile_y << std::endl;
-    std::cout << "\n\n";
-
     // below functionality can be exttended and added to general collision check TODO
-
+    
     // bottom left tile
     size_t tile0_x = floor(tile_x);
     size_t tile0_y = ceil(tile_y);
@@ -98,9 +102,11 @@ bool Game::onFloor(Object* object)
     size_t tile1_y = ceil(tile_y);
 
     // take care of the case when index is out of range TODO
-    if (map_.getTile(tile0_y, tile0_x) == TileType::Floor or map_.getTile(tile1_y, tile1_x) == TileType::Floor)
+    if ((map_.getTile(tile0_y, tile0_x) == TileType::Floor or map_.getTile(tile1_y, tile1_x) == TileType::Floor) and object->vy > 0)
     {
-        object->vy = 0;        
+        object->vy = 0;   
+        if (dynamic_cast<Mario*>(object)->isJumping())
+            object->resetState();
         return true;
     }
 
@@ -122,12 +128,12 @@ void Game::updateObjects()
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             {
                 object->update(Object::Direction::LEFT);
-                if (pos.x + object->vx <= 0) object->vx = 0;
+                if (pos.x + object->vx <= 5) object->vx = 0;
             }
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
             {
                 object->update(Object::Direction::RIGHT);
-                if (pos.x + object->vx >= SCREEN_WIDTH - 30) object->vx = 0;
+                if (pos.x + object->vx >= SCREEN_WIDTH - 35) object->vx = 0;
             }
             else
             {
