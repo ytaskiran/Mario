@@ -128,8 +128,6 @@ void Mario::update(Direction dir)
 	case 5: // Sliding
 		break;
 	case 6:
-		// düþmeye devam et.	
-		vy += GRAVITY;
 		break;
 	case 7:
 	{
@@ -138,6 +136,7 @@ void Mario::update(Direction dir)
 		break;
 	}
 	}
+	vy += GRAVITY;
 	_prevDir = dir;
 	sprite.setTexture(textures[state]);
 

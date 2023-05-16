@@ -102,7 +102,8 @@ bool Game::onFloor(Object* object)
     size_t tile1_y = ceil(tile_y);
 
     // take care of the case when index is out of range TODO
-    if ((map_.getTile(tile0_y, tile0_x) == TileType::Floor or map_.getTile(tile1_y, tile1_x) == TileType::Floor) and object->vy > 0)
+    if ((map_.getTile(tile0_y, tile0_x) == TileType::Floor or map_.getTile(tile1_y, tile1_x) == TileType::Floor or
+         map_.getTile(tile0_y, tile0_x) == TileType::Brick or map_.getTile(tile1_y, tile1_x) == TileType::Brick) and object->vy > 0)
     {
         object->vy = 0;   
         if (dynamic_cast<Mario*>(object)->isJumping())
