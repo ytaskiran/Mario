@@ -16,9 +16,6 @@ public:
 	virtual void fall(void) override;					// Makes turtle fall when it dies
 	void incrementSpeed(int step);
 	
-	float vx;											// Horizontal speed 
-	float vy;											// Vertical speed
-
 	void resetState();
 	void setSurprised();
 

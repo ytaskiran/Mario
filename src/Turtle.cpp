@@ -2,13 +2,13 @@
 Turtle::Turtle()
 {
 	char path[64];
-	initializeTurtle();
-
+	
 	for (int i = 0; i < 6; i++)
 	{
 		sprintf_s(path, "../assets/turtle%d.png", i);
 		textures[i].loadFromFile(path);
 	}
+	initializeTurtle();
 }
 
 void Turtle::incrementSpeed(int STEP)
@@ -171,13 +171,6 @@ void Turtle::update(Direction dir)
 	}
 
 	sprite.setTexture(textures[state]);
-
-	if (heading != _prevDir)
-	{
-		int width = sprite.getTexture()->getSize().x;
-		int height = sprite.getTexture()->getSize().y;
-		sprite.setTextureRect(sf::IntRect(width, 0, -width, height));
-	}
 }
 
 // Moves the turtle one interation, according to the velocity.

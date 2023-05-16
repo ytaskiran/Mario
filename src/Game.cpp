@@ -21,7 +21,12 @@ void Game::drawBackground()
         }
         else
         {
-            object->draw(window_, 1.0, 1.0);
+            if (object->vx > 0)
+                object->draw(window_, 0.6, 0.6);
+            else
+                object->draw(window_, -0.6, 0.6);
+
+
         }
     }
 }
@@ -29,6 +34,30 @@ void Game::drawBackground()
 void Game::createMario()
 {
     objects_.emplace_back(new Mario());
+}
+
+void Game::createTurtles(int num) 
+{
+    sf::Vector2f pos;
+    pos.y = 75.0f;
+    for (int i = 0; i < num; i++)
+    {
+        Turtle* turtle = new Turtle();
+        if (i % 2 == 0)
+        {
+            pos.x = 118.0f;
+            turtle->update(Object::Direction::RIGHT);
+        }
+        else 
+        {
+            pos.x = 680.0f;
+            turtle->update(Object::Direction::LEFT);
+        }
+        
+        turtle->setPosition(pos);
+        
+        objects_.emplace_back(turtle);
+    }
 }
 
 int Game::mainMenu()
@@ -71,7 +100,7 @@ bool Game::onFloor(Object* object)
     // take care of the case when index is out of range TODO
     if (map_.getTile(tile0_y, tile0_x) == TileType::Floor or map_.getTile(tile1_y, tile1_x) == TileType::Floor)
     {
-        object->vy = 0;
+        object->vy = 0;        
         return true;
     }
 
@@ -85,7 +114,12 @@ void Game::updateObjects()
         auto pos = object->getPosition();
         if (dynamic_cast<Mario*>(object) != nullptr)
         {
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+            {
+                object->jump(false);
+                object->update(Object::Direction::FIXED);
+            }
+            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             {
                 object->update(Object::Direction::LEFT);
                 if (pos.x + object->vx <= 0) object->vx = 0;
@@ -95,10 +129,6 @@ void Game::updateObjects()
                 object->update(Object::Direction::RIGHT);
                 if (pos.x + object->vx >= SCREEN_WIDTH - 30) object->vx = 0;
             }
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-            {
-                object->jump(false);
-            }
             else
             {
                 object->update(Object::Direction::FIXED);
@@ -107,7 +137,19 @@ void Game::updateObjects()
             onFloor(object);
             object->move();
         }
+        else  // Turtle case
+        {
+            // onFloor, checkcollision will be added.
+            float _vx = object->vx;
+            if (_vx > 0)
+                object->update(Object::Direction::RIGHT);
+            else
+                object->update(Object::Direction::LEFT);
+
+        }
+            object->move();
     }
+    
     
 }
 
