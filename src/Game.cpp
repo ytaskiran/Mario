@@ -105,7 +105,7 @@ bool Game::onFloor(Object* object)
     if ((map_.getTile(tile0_y, tile0_x) == TileType::Floor or map_.getTile(tile1_y, tile1_x) == TileType::Floor or
          map_.getTile(tile0_y, tile0_x) == TileType::Brick or map_.getTile(tile1_y, tile1_x) == TileType::Brick) and object->vy > 0)
     {
-        object->sprite.setPosition(object->sprite.getPosition().x, tile0_y * TileMap::TILE_SIZE - 30);
+        object->sprite.setPosition(object->sprite.getPosition().x, tile0_y * TileMap::TILE_SIZE - 30); // consistent movement
         object->vy = 0;   
         if (dynamic_cast<Mario*>(object)->isJumping())
             object->resetState();
@@ -125,9 +125,8 @@ void Game::updateObjects()
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
             {
                 object->jump(false);
-                object->update(Object::Direction::FIXED);
             }
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             {
                 object->update(Object::Direction::LEFT);
                 if (pos.x + object->vx <= 5) object->vx = 0;

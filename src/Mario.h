@@ -17,10 +17,13 @@ public:
 	bool restart();
 
 private:
-	const float SPEED = 3.0;
-	const float MAX_SPEED = 7.0;
 	void initializeMario();
 	void checkSlide();
+
+	const float SPEED = 3.0;
+	const float MAX_SPEED = 7.0;
+	const size_t DEF_TIMEOUT = 7;
+	size_t timeout;
 	int liveCount;
 	bool jumping;
 };

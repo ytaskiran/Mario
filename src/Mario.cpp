@@ -22,120 +22,152 @@ void Mario::update(Direction dir)
 	heading = dir;
 	switch (state)
 	{
-	case 1:
-		if (dir == Direction::FIXED)
-		{
-			vx = 0;
-		}
-		else if (dir == Direction::LEFT)
-		{
-			vx = -SPEED;
-			state = 2;
-		}
-		else if (dir == Direction::RIGHT)
-		{
-			vx = SPEED;
-			state = 2;
-		}
-		break;
-	case 2:
-		if (dir == Direction::FIXED)
-		{
-			state = 1;
-			vx = 0;
-		}
-		else if (dir == Direction::LEFT)
-		{
-			vx = -SPEED;
-
-			if (_prevDir == Direction::LEFT)
+		case 1:
+			if (dir == Direction::FIXED)
 			{
-				state = 3;
+				vx = 0;
 			}
-			else if (_prevDir == Direction::RIGHT)
+			else if (dir == Direction::LEFT)
 			{
+				vx = -SPEED;
 				state = 2;
 			}
-		}
-		else if (dir == Direction::RIGHT)
-		{
-			vx = SPEED;
-
-			if (_prevDir == Direction::RIGHT)
+			else if (dir == Direction::RIGHT)
 			{
-				state = 3;
-			}
-			else if (_prevDir == Direction::LEFT)
-			{
+				vx = SPEED;
 				state = 2;
 			}
-		}
-		break;
-	case 3:
-		if (dir == Direction::FIXED)
-		{
-			state = 1;
-			vx = 0;
-		}
-		else if (dir == Direction::LEFT)
-		{
-			vx = -SPEED;
-
-			if (_prevDir == Direction::LEFT)
+			break;
+		case 2:
+			if (timeout > 0)
 			{
-				state = 4;
+				timeout--;
+				break;
 			}
-			else if (_prevDir == Direction::RIGHT)
+
+			if (dir == Direction::FIXED)
+			{
+				state = 1;
+				vx = 0;
+			}
+			else if (dir == Direction::LEFT)
+			{
+				vx = -SPEED;
+
+				if (_prevDir == Direction::LEFT)
+				{
+					state = 3;
+				}
+				else if (_prevDir == Direction::RIGHT)
+				{
+					state = 2;
+				}
+			}
+			else if (dir == Direction::RIGHT)
+			{
+				vx = SPEED;
+
+				if (_prevDir == Direction::RIGHT)
+				{
+					state = 3;
+				}
+				else if (_prevDir == Direction::LEFT)
+				{
+					state = 2;
+				}
+			}
+			break;
+		case 3:
+			if (timeout > 0)
+			{
+				timeout--;
+				break;
+			}
+			if (dir == Direction::FIXED)
+			{
+				state = 1;
+				vx = 0;
+			}
+			else if (dir == Direction::LEFT)
+			{
+				vx = -SPEED;
+
+				if (_prevDir == Direction::LEFT)
+				{
+					state = 4;
+				}
+				else if (_prevDir == Direction::RIGHT)
+				{
+					state = 2;
+				}
+			}
+			else if (dir == Direction::RIGHT)
+			{
+				vx = SPEED;
+
+				if (_prevDir == Direction::RIGHT)
+				{
+					state = 4;
+				}
+				else if (_prevDir == Direction::LEFT)
+				{
+					state = 2;
+				}
+			}
+			break;
+		case 4:
+			if (timeout > 0)
+			{
+				timeout--;
+				break;
+			}
+			if (dir == Direction::FIXED)
+			{
+				state = 1;
+				vx = 0;
+			}
+			else
 			{
 				state = 2;
-			}
-		}
-		else if (dir == Direction::RIGHT)
-		{
-			vx = SPEED;
 
-			if (_prevDir == Direction::RIGHT)
-			{
-				state = 4;
-			}
-			else if (_prevDir == Direction::LEFT)
-			{
-				state = 2;
-			}
-		}
-		break;
-	case 4:
-		if (dir == Direction::FIXED)
-		{
-			state = 1;
-			vx = 0;
-		}
-		else
-		{
-			state = 2;
+				if (dir == Direction::RIGHT)
+				{
+					vx = SPEED;
+				}
 
-			if (dir == Direction::RIGHT)
+				else if (dir == Direction::LEFT)
+				{
+					vx = -SPEED;
+				}
+			}
+			break;
+		case 5: // Sliding
+			break;
+		case 6:
+			if (dir == Direction::FIXED)
+			{
+				vx = 0;
+			}
+			else if (dir == Direction::RIGHT)
 			{
 				vx = SPEED;
 			}
-
 			else if (dir == Direction::LEFT)
 			{
 				vx = -SPEED;
 			}
+			break;
+		case 7:
+		{
+			vx = 0;
+			vy += GRAVITY; // Ekranýn aþaðýsýna düþmeye devam etsin. // Hýzýný arttýralým.
+			break;
 		}
-		break;
-	case 5: // Sliding
-		break;
-	case 6:
-		break;
-	case 7:
-	{
-		vx = 0;
-		vy += GRAVITY; // Ekranýn aþaðýsýna düþmeye devam etsin. // Hýzýný arttýralým.
-		break;
 	}
-	}
+
+	if (timeout == 0)
+		timeout = DEF_TIMEOUT;
+	timeout--;
 	vy = std::min<float>(vy + GRAVITY, MAX_SPEED);
 	_prevDir = dir;
 	sprite.setTexture(textures[state]);
@@ -200,6 +232,8 @@ void Mario::initializeMario()
 	jumping = false;
 	vx = 0;
 	vy = 0;
+
+	timeout = DEF_TIMEOUT;
 
 	state = 1;
 	sprite.setTexture(textures[state]);
