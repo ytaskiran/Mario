@@ -18,6 +18,7 @@ public:
 
 private:
 	const float SPEED = 3.0;
+	const float MAX_SPEED = 7.0;
 	void initializeMario();
 	void checkSlide();
 	int liveCount;

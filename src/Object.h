@@ -3,6 +3,8 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <cmath>
+#include <algorithm>
 
 class Object
 {

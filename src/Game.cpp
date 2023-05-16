@@ -80,11 +80,11 @@ bool Game::onFloor(Object* object)
     float x_pixel{};
     float y_pixel{};
     if (object->vx > 0)
-        x_pixel = object->getPosition().x + object->sprite.getGlobalBounds().width;
+        x_pixel = object->getPosition().x + object->sprite.getGlobalBounds().width / 2;
     else
         x_pixel = object->getPosition().x;
     if (object->vy > 0)
-        y_pixel = object->getPosition().y + object->sprite.getGlobalBounds().height;
+        y_pixel = object->getPosition().y + object->sprite.getGlobalBounds().height / 2;
     else
         y_pixel = object->getPosition().y;
 
@@ -105,6 +105,7 @@ bool Game::onFloor(Object* object)
     if ((map_.getTile(tile0_y, tile0_x) == TileType::Floor or map_.getTile(tile1_y, tile1_x) == TileType::Floor or
          map_.getTile(tile0_y, tile0_x) == TileType::Brick or map_.getTile(tile1_y, tile1_x) == TileType::Brick) and object->vy > 0)
     {
+        object->sprite.setPosition(object->sprite.getPosition().x, tile0_y * TileMap::TILE_SIZE - 30);
         object->vy = 0;   
         if (dynamic_cast<Mario*>(object)->isJumping())
             object->resetState();
