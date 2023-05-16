@@ -101,6 +101,9 @@ bool Game::onFloor(Object* object)
     size_t tile1_x = ceil(tile_x);
     size_t tile1_y = ceil(tile_y);
 
+    if (tile0_x < 0) tile0_x = 0;
+    if (tile1_x > SCREEN_WIDTH / TileMap::TILE_SIZE) tile1_x = SCREEN_WIDTH / TileMap::TILE_SIZE;
+
     // take care of the case when index is out of range TODO
     if ((map_.getTile(tile0_y, tile0_x) == TileType::Floor or map_.getTile(tile1_y, tile1_x) == TileType::Floor or
          map_.getTile(tile0_y, tile0_x) == TileType::Brick or map_.getTile(tile1_y, tile1_x) == TileType::Brick) and object->vy > 0)
