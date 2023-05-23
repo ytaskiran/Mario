@@ -32,7 +32,18 @@ public:
 	void createMario();
 	void createTurtles(int);
 	void updateObjects();
+	int mainMenu();
 	~Game();
+
+	enum class Status
+	{
+		MainMenu,
+		Begin,
+		Won,
+		GameOver
+	};
+
+	Status status;
 
 private:
 	void drawLives();
@@ -40,7 +51,6 @@ private:
 	bool checkCollusion(Turtle* t, Mario* m, int& side);	// Checks if Mario has hit a turtle and from which side
 	void checkObstacle(Object* object);
 	void marioFail();
-	int mainMenu();
 
 	sf::RenderWindow* window_;
 	TileMap map_{};
@@ -48,6 +58,8 @@ private:
 	std::list<Object*> objects_{};
 	sf::Sprite sprite;										// Sprite for general game menu
 	sf::Texture lives_texture;
+	sf::Texture mario_menu;
+	sf::Font font;
 	Object::Direction lastTurtleDir;
 
 	const size_t MARIO_MAX_LIVES = _MARIO_MAX_LIVES;

@@ -1,12 +1,9 @@
 #include "Game.h"
 
-Game::Game(sf::RenderWindow* window) : window_(window)
+Game::Game(sf::RenderWindow* window) : window_(window), status(Status::MainMenu)
 {
-    char path[64];
-
-    sprintf_s(path, "../assets/mariohead.png");
-    lives_texture.loadFromFile(path);
-
+    lives_texture.loadFromFile("../assets/mariohead.png");
+    mario_menu.loadFromFile("../assets/mario_menu.png");
     scoreboard_.setLives(MARIO_MAX_LIVES);
 }
 
@@ -18,7 +15,6 @@ void Game::drawBackground()
     {        
         if (dynamic_cast<Mario*>(object) != nullptr)
         {
-            // TODO store the latest direction to set when stationary
             if (object->getVelocityX() > 0 || (object->getVelocityX() == 0 && object->getHeading() == Object::Direction::RIGHT))
                 object->draw(window_, -0.6, 0.6);
             else if (object->getVelocityX() < 0 || (object->getVelocityX() == 0 && object->getHeading() == Object::Direction::LEFT))
@@ -49,11 +45,12 @@ void Game::drawBackground()
 void Game::drawLives()
 {
     sprite.setTexture(lives_texture);
+    sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);
     sprite.setScale(0.8, 0.8);
 
     for (int i = 1; i <= scoreboard_.getLives(); i++)
     {
-        sprite.setPosition(40 * i, 10);
+        sprite.setPosition(40 * i, 20);
         window_->draw(sprite);
     }
 
@@ -95,15 +92,31 @@ void Game::createTurtles(int num)
 
 int Game::mainMenu()
 {
-    //sf::Font font;
-    //if (!font.loadFromFile("../assets/font.ttf"))
-    //{
-    //    std::cout << "Unable to load the font file from " << std::filesystem::current_path() << std::endl;
-    //    std::cin.get();
-    //    return EXIT_FAILURE;
-    //}
+    if (!font.loadFromFile("../assets/font.ttf"))
+    {
+        std::cout << "Unable to load the font file. " << std::endl;
+        return EXIT_FAILURE;
+    }
 
-    //sf::Text text("Welcome to the Mario ", font, 40);
+    sf::Text welcome_text("Welcome to the Mario", font, 40);
+    welcome_text.setPosition(SCREEN_WIDTH / 2, 100.f);
+    welcome_text.setOrigin(welcome_text.getLocalBounds().width / 2, welcome_text.getLocalBounds().height / 2);
+    welcome_text.setFillColor(sf::Color::Red);
+    welcome_text.setStyle(sf::Text::Bold);
+
+    sf::Text start_text("Press ENTER to Start", font, 30);
+    start_text.setPosition(SCREEN_WIDTH / 2, 250.f);
+    start_text.setOrigin(start_text.getLocalBounds().width / 2, start_text.getLocalBounds().height / 2);
+
+    sf::Sprite mario;
+    mario.setTexture(mario_menu);
+    mario.setScale(2, 2);
+    mario.setPosition(SCREEN_WIDTH / 2, 450.f);
+    mario.setOrigin(mario.getLocalBounds().width / 2, mario.getLocalBounds().height / 2);
+
+    window_->draw(welcome_text);
+    window_->draw(start_text);
+    window_->draw(mario);
 
     return 0;
 }

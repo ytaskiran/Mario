@@ -25,12 +25,30 @@ int main()
             // Close window: exit
             if (event.type == sf::Event::Closed)
                 window.close();
+
+            if (event.type == sf::Event::KeyPressed)
+            {
+                if (event.key.code == sf::Keyboard::Enter)
+                {
+                    game.status =  Game::Status::Begin;
+                }
+            }
         }
         // Clear screen
         window.clear();
-        
-        game.updateObjects();
-        game.drawBackground();
+
+        if (game.status == Game::Status::MainMenu)
+        {
+            window.clear(sf::Color(18, 23, 53));
+            if (game.mainMenu())
+                return EXIT_FAILURE;
+        }
+
+        else if (game.status == Game::Status::Begin)
+        {
+            game.updateObjects();
+            game.drawBackground();
+        }
 
         // Update the window
         window.display();
