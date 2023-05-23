@@ -230,6 +230,8 @@ void Turtle::update(Direction dir)
 // Moves the turtle one interation, according to the velocity.
 void Turtle::move()
 {
+	if (pos.x + vx > SCREEN_WIDTH || pos.x + vx < 30) 
+		vx = 0;
 	sprite.move(vx, vy);
 	pos = sprite.getPosition();
 }
