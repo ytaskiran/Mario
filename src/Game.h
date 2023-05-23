@@ -48,9 +48,6 @@ private:
 	std::list<Object*> objects_{};
 	sf::Sprite sprite;										// Sprite for general game menu
 	sf::Texture lives_texture;
-	void createTurtlesInOrder();
-	int turtleNotInitYet;
-	int lastTurtleInit;
 	Object::Direction lastTurtleDir;
 
 	const size_t MARIO_MAX_LIVES = _MARIO_MAX_LIVES;

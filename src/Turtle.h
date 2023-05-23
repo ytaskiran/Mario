@@ -37,6 +37,5 @@ private:
 	int pipeTimeout;
 	int pipeDir;
 	const float MAX_SPEED = _TURTLE_MAX_SPEED;
-	const float MAX_SPEED = 7.0;
 	bool isHide;
 };
