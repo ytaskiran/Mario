@@ -22,7 +22,5 @@ private:
 	const float SPEED = _MARIO_SPEED;
 	const float JUMP_SPEED = _MARIO_JUMP_SPEED;
 	const float MAX_SPEED = _MARIO_MAX_SPEED;
-	const size_t DEF_TIMEOUT = 7;
-	size_t timeout;										// Makes the motion more smooth by adding a delay between animation changes
 	bool jumping;
 };

@@ -29,6 +29,10 @@ public:
 		LEFT,
 		RIGHT
 	};
+
+	Direction getHeading();
+	Direction getPrevHeading();
+	void setPrevHeading(Direction dir);
 	
 	// Virtual functions
 	virtual void update(Direction direction);			// Abstract method that will be overridden
@@ -44,8 +48,10 @@ protected:
 	const float GRAVITY = 1;							// Constant gravity value used in objects.
 	sf::Vector2f pos;									// Current position of object on screen
 	Direction heading;									// Facing direction of object
+	Direction prev_heading;								// Previous facing direction of object to remember when stationary 
 	sf::Texture textures[8];							// Textures of Object (there are 8 textures total for Mario and 6 textures for Turtle)
 	//sf::RenderWindow* window_;						// Pointer to render window
 	float vx;											// Horizontal speed 
 	float vy;											// Vertical speed
+	size_t animation_offset;							// Makes the motion more smooth by adding a delay between animation changes
 };

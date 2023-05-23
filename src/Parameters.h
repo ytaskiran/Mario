@@ -9,3 +9,4 @@ constexpr float _TURTLE_MAX_SPEED = 7.0;
 constexpr float _MARIO_MAX_SPEED = 10.0;
 constexpr float _MARIO_SPEED = 7.0;
 constexpr float _MARIO_JUMP_SPEED = -17.0;
+constexpr float _DEF_ANIMATION_OFFSET = 7.0;

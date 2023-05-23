@@ -23,12 +23,12 @@ void Turtle::initializeTurtle()
 {
 	speed = 3;
 	state = 1;
+	animation_offset = _DEF_ANIMATION_OFFSET;
 	isFalling = false;
 	isJumping = false;
 	flippedOver = false;
 	isInPipe = false;
 	sprite.setTexture(textures[state]);
-	_prevDir = heading;
 	// position iniatilize et. Position dýþardan alabilirsin. Bu durumda initialize fonksiyonunu dýþardan çaðýrýrýz.
 	vy = 10;
 	if (heading == Direction::RIGHT)
@@ -53,7 +53,7 @@ void Turtle::initializeTurtle()
 // Update the Turtle velocity, state and heading. Is is called in every frame.
 void Turtle::update(Direction dir)
 {
-	Direction _prevDir = heading;
+	Direction prev_dir = heading;
 	heading = dir;
 
 	if (initDelay > 0)
@@ -110,6 +110,12 @@ void Turtle::update(Direction dir)
 	switch (state)
 	{
 	case 1:
+		if (animation_offset > 0)
+		{
+			animation_offset--;
+			break;
+		}
+
 		if (dir == Direction::FIXED) 
 		{
 			vx = 0;
@@ -117,7 +123,7 @@ void Turtle::update(Direction dir)
 		else if (dir == Direction::LEFT)
 		{
 			vx = -speed;
-			if (_prevDir == Direction::LEFT) 
+			if (prev_dir == Direction::LEFT)
 			{
 				state = 2;
 			}
@@ -125,13 +131,19 @@ void Turtle::update(Direction dir)
 		else if (dir == Direction::RIGHT)
 		{
 			vx = speed;
-			if (_prevDir == Direction::RIGHT)
+			if (prev_dir == Direction::RIGHT)
 			{
 				state = 2;
 			}
 		}
 		break;
 	case 2:
+		if (animation_offset > 0)
+		{
+			animation_offset--;
+			break;
+		}
+
 		if (dir == Direction::FIXED)
 		{
 			vx = 0;
@@ -140,11 +152,11 @@ void Turtle::update(Direction dir)
 		else if (dir == Direction::LEFT)
 		{
 			vx = -speed;
-			if (_prevDir == Direction::LEFT)
+			if (prev_dir == Direction::LEFT)
 			{
 				state = 3;
 			}
-			else if (_prevDir == Direction::RIGHT)
+			else if (prev_dir == Direction::RIGHT)
 			{
 				state = 1;
 			}
@@ -152,18 +164,22 @@ void Turtle::update(Direction dir)
 		else if (dir == Direction::RIGHT)
 		{
 			vx = speed;
-			if (_prevDir == Direction::RIGHT)
+			if (prev_dir == Direction::RIGHT)
 			{
 				state = 3;
 			}
-			if (_prevDir == Direction::LEFT)
+			if (prev_dir == Direction::LEFT)
 			{
 				state = 1;
 			}
 		}		
 		break;
 	case 3:
-		state = 1;
+		if (animation_offset > 0)
+		{
+			animation_offset--;
+			break;
+		}
 		if (dir == Direction::FIXED)
 		{
 			vx = 0;
@@ -176,6 +192,7 @@ void Turtle::update(Direction dir)
 		{
 			vx = speed;
 		}		
+		state = 1;
 		break;
 	case 4:
 		// Þaþýrma durumu. Yön deðiþitirecek.
@@ -221,6 +238,10 @@ void Turtle::update(Direction dir)
 		}
 		break;
 	}
+
+	if (animation_offset == 0)
+		animation_offset = _DEF_ANIMATION_OFFSET;
+	animation_offset--;
 
 	vy = std::min<float>(vy + GRAVITY, MAX_SPEED);
 

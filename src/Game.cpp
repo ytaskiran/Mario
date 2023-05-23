@@ -19,21 +19,26 @@ void Game::drawBackground()
         if (dynamic_cast<Mario*>(object) != nullptr)
         {
             // TODO store the latest direction to set when stationary
-            if (object->getVelocityX() > 0)
+            if (object->getVelocityX() > 0 || (object->getVelocityX() == 0 && object->getHeading() == Object::Direction::RIGHT))
+                object->draw(window_, -0.6, 0.6);
+            else if (object->getVelocityX() < 0 || (object->getVelocityX() == 0 && object->getHeading() == Object::Direction::LEFT))
+                object->draw(window_, 0.6, 0.6);
+            else if (object->getVelocityX() == 0 && object->getPrevHeading() == Object::Direction::RIGHT)
                 object->draw(window_, -0.6, 0.6);
             else
                 object->draw(window_, 0.6, 0.6);
-
         }
         else
         {
             if (!dynamic_cast<Turtle*>(object)->getIsHide())
             {
-                if (object->getVelocityX() > 0)
+                if (object->getVelocityX() > 0 || (object->getVelocityX() == 0 && object->getHeading() == Object::Direction::RIGHT))
                     object->draw(window_, 0.6, 0.6);
+                else if (object->getVelocityX() < 0 || (object->getVelocityX() == 0 && object->getHeading() == Object::Direction::LEFT))
+                    object->draw(window_, -0.6, 0.6);
                 else
                     object->draw(window_, -0.6, 0.6);
-            }
+            }       
         }
     }
 
@@ -163,11 +168,13 @@ void Game::updateObjects()
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             {
                 object->update(Object::Direction::LEFT);
+                object->setPrevHeading(Object::Direction::LEFT); // remember the direction when stationary
                 if (pos.x + object->getVelocityX() <= 5) object->setVelocityX(0);
             }
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
             {
                 object->update(Object::Direction::RIGHT);
+                object->setPrevHeading(Object::Direction::RIGHT); // remember the direction when stationary
                 if (pos.x + object->getVelocityX() >= SCREEN_WIDTH - 35) object->setVelocityX(0);
             }
             else
@@ -188,13 +195,9 @@ void Game::updateObjects()
                 object->update(Object::Direction::LEFT);
 
             onFloor(object);
-
-            onFloor(object);
         }
 
         object->move();
-
-
     }
 }
 

@@ -17,7 +17,7 @@ Mario::Mario()
 // Update the state and velocity of the Mario, according to the given direction.
 void Mario::update(Direction dir)
 {
-	Direction _prevDir = heading;
+	Direction prev_dir = heading;
 	heading = dir;
 	switch (state)
 	{
@@ -38,9 +38,9 @@ void Mario::update(Direction dir)
 			}
 			break;
 		case 2:
-			if (timeout > 0)
+			if (animation_offset > 0)
 			{
-				timeout--;
+				animation_offset--;
 				break;
 			}
 
@@ -53,11 +53,11 @@ void Mario::update(Direction dir)
 			{
 				vx = -SPEED;
 
-				if (_prevDir == Direction::LEFT)
+				if (prev_dir == Direction::LEFT)
 				{
 					state = 3;
 				}
-				else if (_prevDir == Direction::RIGHT)
+				else if (prev_dir == Direction::RIGHT)
 				{
 					state = 2;
 				}
@@ -66,20 +66,20 @@ void Mario::update(Direction dir)
 			{
 				vx = SPEED;
 
-				if (_prevDir == Direction::RIGHT)
+				if (prev_dir == Direction::RIGHT)
 				{
 					state = 3;
 				}
-				else if (_prevDir == Direction::LEFT)
+				else if (prev_dir == Direction::LEFT)
 				{
 					state = 2;
 				}
 			}
 			break;
 		case 3:
-			if (timeout > 0)
+			if (animation_offset > 0)
 			{
-				timeout--;
+				animation_offset--;
 				break;
 			}
 			if (dir == Direction::FIXED)
@@ -91,11 +91,11 @@ void Mario::update(Direction dir)
 			{
 				vx = -SPEED;
 
-				if (_prevDir == Direction::LEFT)
+				if (prev_dir == Direction::LEFT)
 				{
 					state = 4;
 				}
-				else if (_prevDir == Direction::RIGHT)
+				else if (prev_dir == Direction::RIGHT)
 				{
 					state = 2;
 				}
@@ -104,20 +104,20 @@ void Mario::update(Direction dir)
 			{
 				vx = SPEED;
 
-				if (_prevDir == Direction::RIGHT)
+				if (prev_dir == Direction::RIGHT)
 				{
 					state = 4;
 				}
-				else if (_prevDir == Direction::LEFT)
+				else if (prev_dir == Direction::LEFT)
 				{
 					state = 2;
 				}
 			}
 			break;
 		case 4:
-			if (timeout > 0)
+			if (animation_offset > 0)
 			{
-				timeout--;
+				animation_offset--;
 				break;
 			}
 			if (dir == Direction::FIXED)
@@ -164,13 +164,12 @@ void Mario::update(Direction dir)
 		}
 	}
 
-	if (timeout == 0)
-		timeout = DEF_TIMEOUT;
-	timeout--;
+	if (animation_offset == 0)
+		animation_offset = _DEF_ANIMATION_OFFSET;
+	animation_offset--;
 	vy = std::min<float>(vy + GRAVITY, MAX_SPEED);
-	_prevDir = dir;
+	prev_dir = dir;
 	sprite.setTexture(textures[state]);
-
 }
 
 // Sets the Mario y velocity and state in jump state.
@@ -218,7 +217,7 @@ void Mario::initializeMario()
 	vx = 0;
 	vy = 0;
 
-	timeout = DEF_TIMEOUT;
+	animation_offset = _DEF_ANIMATION_OFFSET;
 
 	state = 1;
 	sprite.setTexture(textures[state]);

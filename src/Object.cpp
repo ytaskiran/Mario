@@ -54,6 +54,21 @@ void Object::setVelocityY(float vel)
 	vy = vel;
 }
 
+Object::Direction Object::getHeading()
+{
+	return heading;
+}
+
+Object::Direction Object::getPrevHeading()
+{
+	return prev_heading;
+}
+
+void Object::setPrevHeading(Object::Direction dir)
+{
+	prev_heading = dir;
+}
+
 
 void Object::update(Direction direction)
 {

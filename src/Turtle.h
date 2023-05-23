@@ -23,7 +23,6 @@ public:
 
 private:
 	float speed; 
-	Direction _prevDir;
 	void initializeTurtle();
 	const int STEP = 1;
 	bool waitedOneSecond;
