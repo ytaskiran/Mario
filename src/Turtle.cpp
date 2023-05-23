@@ -170,6 +170,8 @@ void Turtle::update(Direction dir)
 		break;
 	}
 
+	vy = std::min<float>(vy + GRAVITY, MAX_SPEED);
+
 	sprite.setTexture(textures[state]);
 }
 

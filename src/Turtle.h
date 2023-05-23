@@ -30,4 +30,5 @@ private:
 	sf::Clock clock;
 	bool isFalling;
 	bool isJumping;
+	const float MAX_SPEED = 7.0;
 };
