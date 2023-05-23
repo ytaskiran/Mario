@@ -14,10 +14,6 @@ Turtle::Turtle(int initDelay, Direction dir)
 	initializeTurtle();
 }
 
-void Turtle::incrementSpeed(int STEP)
-{
-	speed += STEP;
-}
 
 void Turtle::initializeTurtle()
 {
@@ -53,6 +49,8 @@ void Turtle::initializeTurtle()
 // Update the Turtle velocity, state and heading. Is is called in every frame.
 void Turtle::update(Direction dir)
 {
+	speed += 0.0004;
+	speed = std::min(MAX_SPEED_X, speed);
 	Direction prev_dir = heading;
 	heading = dir;
 
@@ -71,15 +69,18 @@ void Turtle::update(Direction dir)
 		{
 			state = 1;
 			isInPipe = false;
-
+			isHide = false;
 			// initalize turtle again
 			pos.y = 75.0f;
+			vy = 1;
 			if (pipeDir == 0)
 			{
-				pos.x = 118.0f;
+				vx = speed;
+				pos.x = 110.0f;
 			}
 			else if (pipeDir == 1)
 			{
+				vx = -speed;
 				pos.x = 680.0f;
 			}
 			sprite.setPosition(pos);
@@ -106,7 +107,7 @@ void Turtle::update(Direction dir)
 		return;
 	}
 
-	// If the turtle not jumping or falling, state diagram works.
+	// If the turtle not in the above states, state diagram works.
 	switch (state)
 	{
 	case 1:
@@ -243,7 +244,7 @@ void Turtle::update(Direction dir)
 		animation_offset = _DEF_ANIMATION_OFFSET;
 	animation_offset--;
 
-	vy = std::min<float>(vy + GRAVITY, MAX_SPEED);
+	vy = std::min<float>(vy + GRAVITY, MAX_SPEED_Y);
 
 	sprite.setTexture(textures[state]);
 }
@@ -253,7 +254,8 @@ void Turtle::move()
 {
 	if (pos.x + vx > SCREEN_WIDTH || pos.x + vx < 30) 
 		vx = 0;
-	sprite.move(vx, vy);
+	if(!isHide)
+		sprite.move(vx, vy);
 	pos = sprite.getPosition();
 }
 
@@ -299,10 +301,26 @@ void Turtle::setInPipe(int PipeDirection)
 
 	pipeDir = PipeDirection;
 	pipeTimeout = 100;
+
 	isInPipe = true;
+	isHide = true;
 }
 
 bool Turtle::getIsHide() 
 {
 	return isHide;
+}
+
+void Turtle::changeDirection()
+{
+	if (heading == Direction::LEFT)
+	{
+		vx = speed;
+		update(Direction::RIGHT);
+	}
+	else
+	{ 
+		vx = -speed;
+		update(Direction::LEFT);
+	}
 }

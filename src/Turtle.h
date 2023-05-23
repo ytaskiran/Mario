@@ -14,12 +14,12 @@ public:
 	virtual void jump(bool down) override;				// Makes turtle jump (if down is true, turtle jumps down off the edge of a floor.Down being false can be
 														// optionally used for fly animation of turtle when it is hit from underneath by Mario)
 	virtual void fall(void) override;					// Makes turtle fall when it dies
-	void incrementSpeed(int step);
 	
 	void resetState();
 	void setSurprised();
 	void setInPipe(int PipeDirection);
 	bool getIsHide();
+	void changeDirection();
 
 private:
 	float speed; 
@@ -35,6 +35,7 @@ private:
 	int initDelay;
 	int pipeTimeout;
 	int pipeDir;
-	const float MAX_SPEED = _TURTLE_MAX_SPEED;
+	const float MAX_SPEED_Y = _TURTLE_MAX_SPEED_Y;
+	const float MAX_SPEED_X = _TURTLE_MAX_SPEED_X;
 	bool isHide;
 };
