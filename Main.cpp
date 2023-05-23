@@ -12,7 +12,7 @@ int main()
 
     Game game(&window);
     game.createMario();
-    game.createTurtles(2);
+    game.createTurtles(5); 
     // Start the game loop
     while (window.isOpen())
     {

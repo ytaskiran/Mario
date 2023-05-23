@@ -18,6 +18,7 @@ public:
 	
 	void resetState();
 	void setSurprised();
+	void setInPipe(int PipeDirection);
 
 private:
 	float speed; 
@@ -30,5 +31,8 @@ private:
 	sf::Clock clock;
 	bool isFalling;
 	bool isJumping;
+	bool isInPipe;
+	int pipeTimeout;
+	int pipeDir;
 	const float MAX_SPEED = 7.0;
 };

@@ -25,8 +25,6 @@ void Game::drawBackground()
                 object->draw(window_, 0.6, 0.6);
             else
                 object->draw(window_, -0.6, 0.6);
-
-
         }
     }
 }
@@ -38,28 +36,50 @@ void Game::createMario()
 
 void Game::createTurtles(int num) 
 {
-    sf::Vector2f pos;
-    pos.y = 75.0f;
-    for (int i = 0; i < num; i++)
-    {
-        Turtle* turtle = new Turtle();
-        if (i % 2 == 0)
-        {
-            pos.x = 118.0f;
-            turtle->update(Object::Direction::RIGHT);
-        }
-        else 
-        {
-            pos.x = 680.0f;
-            turtle->update(Object::Direction::LEFT);
-        }
-        
-        turtle->setPosition(pos);
-        
-        objects_.emplace_back(turtle);
-    }
+
+    turtleNotInitYet = num;
 }
 
+void Game::createTurtlesInOrder()
+{
+    if (turtleNotInitYet <= 0) 
+    {
+        return;
+    }
+    else {
+        if (lastTurtleInit < 150)
+        {
+            lastTurtleInit++;
+            return;
+        }
+        else {
+            std::cout << "New turtle initialized" << std::endl;
+            sf::Vector2f pos;
+            pos.y = 75.0f;
+     
+            Turtle* turtle = new Turtle();
+            if (lastTurtleDir == Object::Direction::RIGHT)
+            {
+                    pos.x = 118.0f;
+                    turtle->update(Object::Direction::RIGHT);
+                    lastTurtleDir = Object::Direction::LEFT;
+             }
+             else
+                {
+                    pos.x = 680.0f;
+                    turtle->update(Object::Direction::LEFT);
+                    lastTurtleDir = Object::Direction::RIGHT;
+                }
+
+                turtle->setPosition(pos);
+
+                objects_.emplace_back(turtle);
+                lastTurtleInit = 0;
+                turtleNotInitYet--;
+            
+        }
+    }
+}
 int Game::mainMenu()
 {
     //sf::Font font;
@@ -121,6 +141,7 @@ bool Game::onFloor(Object* object)
 
 void Game::updateObjects()
 {
+    createTurtlesInOrder();
     for (Object* object : objects_)
     {
         auto pos = object->getPosition();

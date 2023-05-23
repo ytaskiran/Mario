@@ -3,7 +3,7 @@ Turtle::Turtle()
 {
 	char path[64];
 	
-	for (int i = 0; i < 6; i++)
+	for (int i = 1; i < 6; i++)
 	{
 		sprintf_s(path, "../assets/turtle%d.png", i);
 		textures[i].loadFromFile(path);
@@ -21,7 +21,7 @@ void Turtle::initializeTurtle()
 	speed = 5;
 	state = 1;
 	vx = 0;
-	vy = 0;
+	vy = 10;
 	isFalling = false;
 	isJumping = false;
 	flippedOver = false;
@@ -37,8 +37,34 @@ void Turtle::update(Direction dir)
 	Direction _prevDir = heading;
 	heading = dir;
 
+	if (isInPipe) 
+	{
+		if (pipeTimeout == 0)
+		{
+			state = 1;
+			isInPipe = false;
+
+			// initalize turtle again
+			pos.y = 75.0f;
+			if (pipeDir == 0)
+			{
+				pos.x = 118.0f;
+			}
+			else if (pipeDir == 1)
+			{
+				pos.x = 680.0f;
+			}
+			sprite.setPosition(pos);
+			return;
+		}
+		else
+		{
+			pipeTimeout--;
+			return;
+		}
+	}
 	// Checks turtle is falling or not. If falling, turtle continue to fall, until it leaves the frame.
-	if (isFalling) 
+	else if (isFalling) 
 	{
 		vx = 0;
 		vy += GRAVITY;
@@ -113,7 +139,6 @@ void Turtle::update(Direction dir)
 		if (dir == Direction::FIXED)
 		{
 			vx = 0;
-			
 		}
 		else if (dir == Direction::LEFT)
 		{
@@ -160,7 +185,6 @@ void Turtle::update(Direction dir)
 				speed += 30; // Keep moving faster as it has been aggravated
 				flippedOver = false;
 			}
-			
 		}
 		else 
 		{
@@ -215,4 +239,15 @@ void Turtle::resetState()
 void Turtle::setSurprised()
 {
 	state = 4;
+}
+
+void Turtle::setInPipe(int PipeDirection)
+{
+	vx = 0;
+	vy = 0;
+
+	pos.x = -10;
+	pipeDir = PipeDirection;
+	pipeTimeout = 100;
+	isInPipe = true;
 }
