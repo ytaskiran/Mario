@@ -1,5 +1,5 @@
 #include "Turtle.h"
-Turtle::Turtle()
+Turtle::Turtle(int initDelay, Direction dir)
 {
 	char path[64];
 	
@@ -8,6 +8,9 @@ Turtle::Turtle()
 		sprintf_s(path, "../assets/turtle%d.png", i);
 		textures[i].loadFromFile(path);
 	}
+
+	this->heading = dir;
+	this->initDelay = initDelay;
 	initializeTurtle();
 }
 
@@ -18,17 +21,33 @@ void Turtle::incrementSpeed(int STEP)
 
 void Turtle::initializeTurtle()
 {
-	speed = 5;
+	speed = 3;
 	state = 1;
-	vx = 0;
-	vy = 10;
 	isFalling = false;
 	isJumping = false;
 	flippedOver = false;
+	isInPipe = false;
 	sprite.setTexture(textures[state]);
-	heading = Direction::FIXED;
-	_prevDir = Direction::FIXED;
+	_prevDir = heading;
 	// position iniatilize et. Position dýþardan alabilirsin. Bu durumda initialize fonksiyonunu dýþardan çaðýrýrýz.
+	vy = 10;
+	if (heading == Direction::RIGHT)
+	{
+		vx = 1;
+	}
+	else 
+	{
+		vx = -1;
+	}
+
+	if (initDelay == 0) 
+	{
+		isHide = false;
+	}
+	else 
+	{
+		isHide = true;
+	}
 }
 
 // Update the Turtle velocity, state and heading. Is is called in every frame.
@@ -36,6 +55,15 @@ void Turtle::update(Direction dir)
 {
 	Direction _prevDir = heading;
 	heading = dir;
+
+	if (initDelay > 0)
+	{
+		if (--initDelay == 0)
+		{
+			isHide = false;
+		}
+		return;
+	}
 
 	if (isInPipe) 
 	{
@@ -246,8 +274,12 @@ void Turtle::setInPipe(int PipeDirection)
 	vx = 0;
 	vy = 0;
 
-	pos.x = -10;
 	pipeDir = PipeDirection;
 	pipeTimeout = 100;
 	isInPipe = true;
+}
+
+bool Turtle::getIsHide() 
+{
+	return isHide;
 }

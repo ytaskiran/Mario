@@ -7,7 +7,7 @@
 class Turtle : public Object
 {
 public:
-	Turtle();	// Constructor 
+	Turtle(int initDelay, Direction dir);	// Constructor 
 
 	void update(Direction dir);
 	virtual void move() override;						// Moves turtle left or right
@@ -19,6 +19,7 @@ public:
 	void resetState();
 	void setSurprised();
 	void setInPipe(int PipeDirection);
+	bool getIsHide();
 
 private:
 	float speed; 
@@ -32,7 +33,10 @@ private:
 	bool isFalling;
 	bool isJumping;
 	bool isInPipe;
+	int initDelay;
 	int pipeTimeout;
 	int pipeDir;
 	const float MAX_SPEED = _TURTLE_MAX_SPEED;
+	const float MAX_SPEED = 7.0;
+	bool isHide;
 };
