@@ -130,6 +130,7 @@ bool Game::onFloor(Object* object)
     int tile1_y = ceil(tile_y);
 
     if (tile0_x < 0) tile0_x = 0;
+    if (tile0_x > (SCREEN_WIDTH / TileMap::TILE_SIZE) - 1) tile0_x = (SCREEN_WIDTH / TileMap::TILE_SIZE) - 1;
     if (tile1_x > (SCREEN_WIDTH / TileMap::TILE_SIZE) - 1) tile1_x = (SCREEN_WIDTH / TileMap::TILE_SIZE) - 1;
     if (tile0_y < 0) tile0_y = 0; if (tile1_y < 0) tile1_y = 0;
 
