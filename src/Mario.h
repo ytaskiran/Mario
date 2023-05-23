@@ -18,7 +18,7 @@ public:
 
 private:
 	void initializeMario();
-	void checkSlide(Direction,Direction);
+	void checkSlide(Direction dir);
 
 	const float SPEED = _MARIO_SPEED;
 	const float JUMP_SPEED = _MARIO_JUMP_SPEED;

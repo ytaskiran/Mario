@@ -17,7 +17,7 @@ Mario::Mario()
 // Update the state and velocity of the Mario, according to the given direction.
 void Mario::update(Direction dir)
 {
-	checkSlide(heading, dir);
+	checkSlide(dir);
 	Direction prev_dir = heading;
 	heading = dir;
 	switch (state)
@@ -216,9 +216,8 @@ void Mario::fall(void)
 // Reset the Mario state. It is used in Game logic to exit Mario from jumping state.
 void Mario::resetState()
 {
-	state = 1;
+	state = 5;
 	vy = 0;
-	vx = 0;
 	jumping = false;
 }
 
@@ -250,21 +249,13 @@ void Mario::move(void)
 	pos = sprite.getPosition();
 }
 
-// Not implemented yet. It can be also implement in game logic.
-void Mario::checkSlide(Direction prev_dir, Direction current_dir)
+void Mario::checkSlide(Direction dir)
 {
-	if (prev_dir != current_dir)
+	if (heading != Direction::FIXED && heading != dir)
 	{
-		if (prev_dir == Direction::LEFT) 
-		{
-			vx = -2;
-		}
-		else if (prev_dir == Direction::RIGHT)
-		{
-			vx = 2;
-		}
 		state = 5;
 	}
+	// Other jumping slide effect is handled in resetState function
 	return;
 }
 
