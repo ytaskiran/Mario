@@ -1,7 +1,9 @@
 ﻿#include <iostream>
 #include <filesystem>
 #include <SFML/Graphics.hpp>
+
 #include "Game.h"
+#include "Parameters.h"
 
 
 int main()

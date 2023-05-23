@@ -3,74 +3,12 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <iostream>
-#include <vector>
 #include <list>
+
+#include "TileMap.h"
 #include "Object.h"
 #include "Mario.h"
 #include "Turtle.h"
-
-constexpr int SCREEN_WIDTH = 800;
-constexpr int SCREEN_HEIGHT = 600;
-
-enum class TileType
-{
-	Empty,
-	Floor,
-	Brick,
-	Pipe,
-	PipeS
-};
-
-
-class TileMap
-{
-public:
-	TileMap();
-	void drawMap(sf::RenderWindow* window);
-	TileType getTile(size_t row, size_t col);
-
-	const static size_t TILE_SIZE = 15;
-
-private:
-	void initializeMap();
-
-	std::vector<std::vector<TileType>> tile_map_;
-
-	sf::Texture floor_texture_;
-	sf::Texture brick_texture_;
-	sf::Texture pipe_texture_;
-	sf::Texture pipe_s_texture_;
-
-	const size_t FLOOR_HEIGHT = 4; // 4 * TILE_SIZE
-	const size_t TILE_WIDTH = SCREEN_WIDTH / TILE_SIZE;
-	const size_t TILE_HEIGHT = SCREEN_HEIGHT / TILE_SIZE;
-};
-
-
-class Game
-{
-public:
-	Game(sf::RenderWindow* window);							// Constructor
-	void drawBackground();									// Draws the background objects
-	void createMario();
-	void createTurtles(int);
-	bool onFloor(Object* object);								// Checks if object is touching a floor surface
-	bool checkCollusion(Turtle* t, Mario* m, int& side);	// Checks if Mario has hit a turtle and from which side
-	void checkObstacle(Object* object);
-	void marioFail();
-	int mainMenu();
-	void updateObjects();
-	~Game();
-
-private:
-	sf::RenderWindow* window_;
-	TileMap map_{};
-	std::list<Object*> objects_{};
-	void createTurtlesInOrder();
-	int turtleNotInitYet;
-	int lastTurtleInit;
-	Object::Direction lastTurtleDir;
-};
 
 
 class ScoreBoard
@@ -84,3 +22,38 @@ private:
 	std::string score;			// Current score 
 	int lives;					// Remaining life count for Mario
 };
+
+
+class Game
+{
+public:
+	Game(sf::RenderWindow* window);							// Constructor
+	void drawBackground();									// Draws the background objects
+	void createMario();
+	void createTurtles(int);
+	void updateObjects();
+	~Game();
+
+private:
+	void drawLives();
+	bool onFloor(Object* object);							// Checks if object is touching a floor surface
+	bool checkCollusion(Turtle* t, Mario* m, int& side);	// Checks if Mario has hit a turtle and from which side
+	void checkObstacle(Object* object);
+	void marioFail();
+	int mainMenu();
+
+	sf::RenderWindow* window_;
+	TileMap map_{};
+	ScoreBoard scoreboard_{};
+	std::list<Object*> objects_{};
+	sf::Sprite sprite;										// Sprite for general game menu
+	sf::Texture lives_texture;
+	void createTurtlesInOrder();
+	int turtleNotInitYet;
+	int lastTurtleInit;
+	Object::Direction lastTurtleDir;
+
+	const size_t MARIO_MAX_LIVES = _MARIO_MAX_LIVES;
+};
+
+

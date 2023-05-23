@@ -6,7 +6,7 @@
 class Mario : public Object
 {
 public:
-	Mario();		// Constructor
+	Mario();											// Constructor
 
 	virtual void update(Direction direction) override;	// Moves Mario left or right
 	virtual void jump(bool down) override;				// Makes Mario jump (if down is true, Mario jumps down off the edge of a floor, otherwise he jumps up)
@@ -14,17 +14,15 @@ public:
 	virtual void move(void) override;
 	bool isJumping();
 	void resetState();
-	bool restart();
 
 private:
 	void initializeMario();
 	void checkSlide();
 
-	const float SPEED = 7.0;
-	const float JUMP_SPEED = -17.0;
-	const float MAX_SPEED = 10.0;
+	const float SPEED = _MARIO_SPEED;
+	const float JUMP_SPEED = _MARIO_JUMP_SPEED;
+	const float MAX_SPEED = _MARIO_MAX_SPEED;
 	const size_t DEF_TIMEOUT = 7;
 	size_t timeout;										// Makes the motion more smooth by adding a delay between animation changes
-	int liveCount;
 	bool jumping;
 };

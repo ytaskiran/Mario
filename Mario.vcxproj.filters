@@ -27,10 +27,10 @@
     <ClCompile Include="src\Object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ScoreBoard.cpp">
+    <ClCompile Include="src\Turtle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Turtle.cpp">
+    <ClCompile Include="src\TileMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,7 +47,10 @@
     <ClInclude Include="src\Turtle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ScoreBoard.h">
+    <ClInclude Include="src\TileMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Parameters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

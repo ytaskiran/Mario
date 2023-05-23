@@ -6,6 +6,8 @@
 #include <cmath>
 #include <algorithm>
 
+#include "Parameters.h"
+
 class Object
 {
 public:

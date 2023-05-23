@@ -3,7 +3,6 @@
 
 Mario::Mario()
 {
-	liveCount = 3;	
 	char path[64];
 
 	for (int i = 1; i < 8; i++)
@@ -206,20 +205,6 @@ void Mario::resetState()
 	vy = 0;
 	vx = 0;
 	jumping = false;
-}
-
-// Restart the mario if Mario dies.
-bool Mario::restart()
-{
-	if (liveCount == 0)
-	{
-		return false;
-	}
-	else 
-	{
-		initializeMario();
-		return true;
-	}
 }
 
 // Initializes variables of Mario class. It is used in Constructor and restart functions.
