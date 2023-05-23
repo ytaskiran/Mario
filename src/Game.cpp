@@ -28,20 +28,18 @@ void Game::drawBackground()
         else
         {
             if (!dynamic_cast<Turtle*>(object)->getIsHide())
-            { 
-            if (object->getVelocityX() > 0)
-                object->draw(window_, 0.6, 0.6);
-            else
-                object->draw(window_, -0.6, 0.6);
+            {
+                if (object->getVelocityX() > 0)
+                    object->draw(window_, 0.6, 0.6);
+                else
+                    object->draw(window_, -0.6, 0.6);
+            }
         }
     }
 
     drawLives();
 }
-            }
-        }
-    }
-}
+           
 
 void Game::drawLives()
 {
