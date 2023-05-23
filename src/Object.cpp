@@ -34,6 +34,27 @@ void Object::draw(sf::RenderWindow* window, float x_scale, float y_scale)
 	window->draw(sprite);
 }
 
+float Object::getVelocityX()
+{
+	return vx;
+}
+
+float Object::getVelocityY()
+{
+	return vy;
+}
+
+void Object::setVelocityX(float vel)
+{
+	vx = vel;
+}
+
+void Object::setVelocityY(float vel)
+{
+	vy = vel;
+}
+
+
 void Object::update(Direction direction)
 {
 

@@ -186,7 +186,7 @@ void Mario::jump(bool down)
 		}
 		else
 		{
-			vy = -12;
+			vy = JUMP_SPEED;
 		}
 		state = 6;
 		jumping = true;

@@ -54,8 +54,9 @@ public:
 	void drawBackground();									// Draws the background objects
 	void createMario();
 	void createTurtles(int);
-	bool onFloor(Object* obj);								// Checks if object is touching a floor surface
+	bool onFloor(Object* object);								// Checks if object is touching a floor surface
 	bool checkCollusion(Turtle* t, Mario* m, int& side);	// Checks if Mario has hit a turtle and from which side
+	void checkObstacle(Object* object);
 	void marioFail();
 	int mainMenu();
 	void updateObjects();

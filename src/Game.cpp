@@ -13,15 +13,15 @@ void Game::drawBackground()
     {        
         if (dynamic_cast<Mario*>(object) != nullptr)
         {
-            // TODO looks bad, fix it
-            if (object->vx > 0)
+            // TODO store the latest direction to set when stationary
+            if (object->getVelocityX() > 0)
                 object->draw(window_, -0.6, 0.6);
             else
                 object->draw(window_, 0.6, 0.6);
         }
         else
         {
-            if (object->vx > 0)
+            if (object->getVelocityX() > 0)
                 object->draw(window_, 0.6, 0.6);
             else
                 object->draw(window_, -0.6, 0.6);
@@ -79,11 +79,11 @@ bool Game::onFloor(Object* object)
 {
     float x_pixel{};
     float y_pixel{};
-    if (object->vx > 0)
+    if (object->getVelocityX() > 0)
         x_pixel = object->getPosition().x + object->sprite.getGlobalBounds().width / 2;
     else
         x_pixel = object->getPosition().x;
-    if (object->vy > 0)
+    if (object->getVelocityY() > 0)
         y_pixel = object->getPosition().y + object->sprite.getGlobalBounds().height / 2;
     else
         y_pixel = object->getPosition().y;
@@ -94,22 +94,23 @@ bool Game::onFloor(Object* object)
     // below functionality can be exttended and added to general collision check TODO
     
     // bottom left tile
-    size_t tile0_x = floor(tile_x);
-    size_t tile0_y = ceil(tile_y);
+    int tile0_x = floor(tile_x);
+    int tile0_y = ceil(tile_y);
 
     // bottom right tile
-    size_t tile1_x = ceil(tile_x);
-    size_t tile1_y = ceil(tile_y);
+    int tile1_x = ceil(tile_x);
+    int tile1_y = ceil(tile_y);
 
     if (tile0_x < 0) tile0_x = 0;
-    if (tile1_x > SCREEN_WIDTH / TileMap::TILE_SIZE) tile1_x = SCREEN_WIDTH / TileMap::TILE_SIZE;
+    if (tile1_x > (SCREEN_WIDTH / TileMap::TILE_SIZE) - 1) tile1_x = (SCREEN_WIDTH / TileMap::TILE_SIZE) - 1;
+    if (tile0_y < 0) tile0_y = 0; if (tile1_y < 0) tile1_y = 0;
 
     // take care of the case when index is out of range TODO
     if ((map_.getTile(tile0_y, tile0_x) == TileType::Floor or map_.getTile(tile1_y, tile1_x) == TileType::Floor or
-         map_.getTile(tile0_y, tile0_x) == TileType::Brick or map_.getTile(tile1_y, tile1_x) == TileType::Brick) and object->vy > 0)
+         map_.getTile(tile0_y, tile0_x) == TileType::Brick or map_.getTile(tile1_y, tile1_x) == TileType::Brick) and object->getVelocityY() > 0)
     {
         object->sprite.setPosition(object->sprite.getPosition().x, tile0_y * TileMap::TILE_SIZE - 30); // consistent movement
-        object->vy = 0;   
+        object->setVelocityY(0);   
         if (dynamic_cast<Mario*>(object)->isJumping())
             object->resetState();
         return true;
@@ -132,12 +133,12 @@ void Game::updateObjects()
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             {
                 object->update(Object::Direction::LEFT);
-                if (pos.x + object->vx <= 5) object->vx = 0;
+                if (pos.x + object->getVelocityX() <= 5) object->setVelocityX(0);
             }
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
             {
                 object->update(Object::Direction::RIGHT);
-                if (pos.x + object->vx >= SCREEN_WIDTH - 35) object->vx = 0;
+                if (pos.x + object->getVelocityX() >= SCREEN_WIDTH - 35) object->setVelocityX(0);
             }
             else
             {
@@ -145,22 +146,90 @@ void Game::updateObjects()
             }
 
             onFloor(object);
-            object->move();
+            checkObstacle(object);
         }
         else  // Turtle case
         {
             // onFloor, checkcollision will be added.
-            float _vx = object->vx;
+            float _vx = object->getVelocityX();
             if (_vx > 0)
                 object->update(Object::Direction::RIGHT);
             else
                 object->update(Object::Direction::LEFT);
 
         }
-            object->move();
+
+        object->move();
+
+
     }
-    
-    
+}
+
+// Checks if hit any obstacle like a pipe or ceiling for Mario
+void Game::checkObstacle(Object* object)
+{
+    float x_pixel{};
+    float y_pixel{};
+
+    int tile_x{};
+    int tile_y{};
+
+    if (object->getVelocityX() == 0 and object->getVelocityY() == 0)
+        return;
+
+    if (object->getVelocityX() > 0)
+    {
+        x_pixel = object->getPosition().x + object->sprite.getGlobalBounds().width / 2;
+        float x = x_pixel / TileMap::TILE_SIZE;
+        tile_x = ceil(x);
+    }
+        
+    else if (object->getVelocityX() < 0)
+    {
+        x_pixel = object->getPosition().x - object->sprite.getGlobalBounds().width / 2;
+        float x = x_pixel / TileMap::TILE_SIZE;
+        tile_x = floor(x);
+    }
+    else
+    {
+        x_pixel = object->getPosition().x;
+        tile_x = x_pixel / TileMap::TILE_SIZE;
+    }
+
+    if (object->getVelocityY() > 0)
+    {
+        y_pixel = object->getPosition().y + object->sprite.getGlobalBounds().height / 2;
+        float y = y_pixel / TileMap::TILE_SIZE;
+        tile_y = ceil(y);
+    }    
+    else if (object->getVelocityY() < 0)
+    {
+        y_pixel = object->getPosition().y - object->sprite.getGlobalBounds().height / 2;
+        float y = y_pixel / TileMap::TILE_SIZE;
+        tile_y = floor(y);
+    }
+
+    else
+    {
+        y_pixel = object->getPosition().y;
+        tile_y = y_pixel / TileMap::TILE_SIZE;
+    }
+
+
+    if (tile_x < 0) tile_x = 0;
+    if (tile_x > (SCREEN_WIDTH / TileMap::TILE_SIZE) - 1) tile_x = (SCREEN_WIDTH / TileMap::TILE_SIZE) - 1;
+    if (tile_y < 0) tile_y = 0;
+
+    if (map_.getTile(tile_y, tile_x) != TileType::Empty)
+    {
+        if (dynamic_cast<Mario*>(object)->isJumping() && object->getVelocityY() > 0)
+            object->resetState();
+        else
+        {
+            object->setVelocityX(0.0);
+            object->setVelocityY(0.0);
+        }
+    }
 }
 
 Game::~Game()
@@ -231,11 +300,11 @@ void TileMap::initializeMap()
             {
                 tile_map_[r][c] = TileType::Pipe;
             }
-            else if ((r >= 7 && r < 9 && c >= 0 && c < 3) || (r >= 5 && r < 7 && c >= 3 && c < 6))
+            else if ((r >= 7 && r < 9 && c >= 0 && c < 3) || (r >= 5 && r < 9 && c >= 3 && c <= 6))
             {
                 tile_map_[r][c] = TileType::PipeS;
             }
-            else if ((r >= 7 && r < 9 && c < TILE_WIDTH && c >= TILE_WIDTH - 3) || (r >= 5 && r < 7 && c < TILE_WIDTH - 3 && c >= TILE_WIDTH - 6))
+            else if ((r >= 7 && r < 9 && c < TILE_WIDTH && c >= TILE_WIDTH - 3) || (r >= 5 && r < 9 && c < TILE_WIDTH - 3 && c >= TILE_WIDTH - 6))
             {
                 tile_map_[r][c] = TileType::PipeS;
             }

@@ -20,10 +20,11 @@ private:
 	void initializeMario();
 	void checkSlide();
 
-	const float SPEED = 3.0;
-	const float MAX_SPEED = 7.0;
+	const float SPEED = 7.0;
+	const float JUMP_SPEED = -17.0;
+	const float MAX_SPEED = 10.0;
 	const size_t DEF_TIMEOUT = 7;
-	size_t timeout;
+	size_t timeout;										// Makes the motion more smooth by adding a delay between animation changes
 	int liveCount;
 	bool jumping;
 };
