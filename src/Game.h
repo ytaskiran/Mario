@@ -66,9 +66,6 @@ private:
 	sf::RenderWindow* window_;
 	TileMap map_{};
 	std::list<Object*> objects_{};
-	void createTurtlesInOrder();
-	int turtleNotInitYet;
-	int lastTurtleInit;
 	Object::Direction lastTurtleDir;
 };
 

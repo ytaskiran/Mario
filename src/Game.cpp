@@ -21,10 +21,13 @@ void Game::drawBackground()
         }
         else
         {
+            if (!dynamic_cast<Turtle*>(object)->getIsHide())
+            { 
             if (object->getVelocityX() > 0)
                 object->draw(window_, 0.6, 0.6);
             else
                 object->draw(window_, -0.6, 0.6);
+            }
         }
     }
 }
@@ -36,50 +39,32 @@ void Game::createMario()
 
 void Game::createTurtles(int num) 
 {
-
-    turtleNotInitYet = num;
-}
-
-void Game::createTurtlesInOrder()
-{
-    if (turtleNotInitYet <= 0) 
+    for (int i = 0; i < num; i++) 
     {
-        return;
-    }
-    else {
-        if (lastTurtleInit < 150)
+        sf::Vector2f pos;
+        pos.y = 75.0f;
+        Turtle* turtle;
+        
+        if (i % 2 == 0 )
         {
-            lastTurtleInit++;
-            return;
+            turtle = new Turtle(i * 50, Object::Direction::RIGHT);
+            pos.x = 118.0f;
+            lastTurtleDir = Object::Direction::LEFT;
         }
-        else {
-            std::cout << "New turtle initialized" << std::endl;
-            sf::Vector2f pos;
-            pos.y = 75.0f;
-     
-            Turtle* turtle = new Turtle();
-            if (lastTurtleDir == Object::Direction::RIGHT)
-            {
-                    pos.x = 118.0f;
-                    turtle->update(Object::Direction::RIGHT);
-                    lastTurtleDir = Object::Direction::LEFT;
-             }
-             else
-                {
-                    pos.x = 680.0f;
-                    turtle->update(Object::Direction::LEFT);
-                    lastTurtleDir = Object::Direction::RIGHT;
-                }
-
-                turtle->setPosition(pos);
-
-                objects_.emplace_back(turtle);
-                lastTurtleInit = 0;
-                turtleNotInitYet--;
-            
+        else
+        {
+            turtle = new Turtle(i * 50, Object::Direction::LEFT);
+            pos.x = 680.0f;
+            lastTurtleDir = Object::Direction::RIGHT;
         }
+
+        turtle->setPosition(pos);
+
+        objects_.emplace_back(turtle);
     }
+
 }
+
 int Game::mainMenu()
 {
     //sf::Font font;
@@ -131,7 +116,7 @@ bool Game::onFloor(Object* object)
     {
         object->sprite.setPosition(object->sprite.getPosition().x, tile0_y * TileMap::TILE_SIZE - 30); // consistent movement
         object->setVelocityY(0);   
-        if (dynamic_cast<Mario*>(object)->isJumping())
+        if (dynamic_cast<Mario*>(object) != nullptr &&dynamic_cast<Mario*>(object)->isJumping())
             object->resetState();
         return true;
     }
@@ -141,7 +126,6 @@ bool Game::onFloor(Object* object)
 
 void Game::updateObjects()
 {
-    createTurtlesInOrder();
     for (Object* object : objects_)
     {
         auto pos = object->getPosition();
@@ -177,7 +161,7 @@ void Game::updateObjects()
                 object->update(Object::Direction::RIGHT);
             else
                 object->update(Object::Direction::LEFT);
-
+            onFloor(object);
         }
 
         object->move();
