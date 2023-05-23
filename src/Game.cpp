@@ -204,10 +204,13 @@ void Game::updateObjects()
             float _vx = object->getVelocityX();
             if (_vx > 0)
                 object->update(Object::Direction::RIGHT);
-            else
+            else if (_vx < 0)
                 object->update(Object::Direction::LEFT);
-
+            else
+                dynamic_cast<Turtle*>(object)->changeDirection();
+            
             onFloor(object);
+            checkObstacle(object);
         }
 
         object->move();
@@ -271,13 +274,21 @@ void Game::checkObstacle(Object* object)
 
     if (map_.getTile(tile_y, tile_x) != TileType::Empty)
     {
-        if (dynamic_cast<Mario*>(object)->isJumping() && object->getVelocityY() > 0)
-            object->resetState();
-        else
+        if (dynamic_cast<Mario*>(object) != nullptr)
         {
-            object->setVelocityX(0.0);
-            object->setVelocityY(0.0);
+            if (dynamic_cast<Mario*>(object)->isJumping() && object->getVelocityY() > 0)
+                object->resetState();
+            else
+            {
+                object->setVelocityX(0.0);
+                object->setVelocityY(0.0);
+            }
         }
+        else if (dynamic_cast<Turtle*>(object) != nullptr && map_.getTile(tile_y, tile_x) == TileType::Pipe)
+            if (tile_x < 10)
+                dynamic_cast<Turtle*>(object)->setInPipe(0);
+            else if (tile_x > 40)
+                dynamic_cast<Turtle*>(object)->setInPipe(1);
     }
 }
 
