@@ -17,6 +17,7 @@ Mario::Mario()
 // Update the state and velocity of the Mario, according to the given direction.
 void Mario::update(Direction dir)
 {
+	checkSlide(heading, dir);
 	Direction prev_dir = heading;
 	heading = dir;
 	switch (state)
@@ -141,7 +142,22 @@ void Mario::update(Direction dir)
 			}
 			break;
 		case 5: // Sliding
-			break;
+			if (sliding_offset > 0)
+			{
+				sliding_offset--;
+				if (heading == Direction::LEFT)
+				{
+					vx += -0.1;
+				}
+				else if (heading == Direction::RIGHT)
+				{
+					vx += 0.1;
+				}
+				break;
+			}
+			else
+				sliding_offset = 10;
+				state = 1;
 		case 6:
 			if (dir == Direction::FIXED)
 			{
@@ -218,6 +234,8 @@ void Mario::initializeMario()
 	vy = 0;
 
 	animation_offset = _DEF_ANIMATION_OFFSET;
+	sliding_offset = 10;
+		
 
 	state = 1;
 	sprite.setTexture(textures[state]);
@@ -233,8 +251,20 @@ void Mario::move(void)
 }
 
 // Not implemented yet. It can be also implement in game logic.
-void Mario::checkSlide() 
+void Mario::checkSlide(Direction prev_dir, Direction current_dir)
 {
+	if (prev_dir != current_dir)
+	{
+		if (prev_dir == Direction::LEFT) 
+		{
+			vx = -2;
+		}
+		else if (prev_dir == Direction::RIGHT)
+		{
+			vx = 2;
+		}
+		state = 5;
+	}
 	return;
 }
 

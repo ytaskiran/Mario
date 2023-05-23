@@ -14,10 +14,11 @@ public:
 	virtual void move(void) override;
 	bool isJumping();
 	void resetState();
+	float sliding_offset;
 
 private:
 	void initializeMario();
-	void checkSlide();
+	void checkSlide(Direction,Direction);
 
 	const float SPEED = _MARIO_SPEED;
 	const float JUMP_SPEED = _MARIO_JUMP_SPEED;
