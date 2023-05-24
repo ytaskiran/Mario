@@ -276,6 +276,20 @@ void Game::checkObstacle(Object* object)
     {
         if (dynamic_cast<Mario*>(object) != nullptr)
         {
+            if (object->getVelocityY() < 0 && map_.getTile(tile_y, tile_x) == TileType::Brick)
+            {
+                for (Object* object : objects_)
+                {
+                    if (dynamic_cast<Turtle*>(object) != nullptr)
+                    {
+                        if (dynamic_cast<Turtle*>(object)->boundingBox().contains(x_pixel, y_pixel - 20))
+                    {
+                        dynamic_cast<Turtle*>(object)->setFlippedOver();
+                    }
+                    }
+                }
+            }
+
             if (dynamic_cast<Mario*>(object)->isJumping() && object->getVelocityY() > 0)
                 object->resetState();
             else

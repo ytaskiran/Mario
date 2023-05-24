@@ -228,12 +228,13 @@ void Turtle::update(Direction dir)
 			if (clock.getElapsedTime().asSeconds() >= 8)
 			{
 				state = 1;
-				speed += 30; // Keep moving faster as it has been aggravated
+				speed += 1; // Keep moving faster as it has been aggravated
 				flippedOver = false;
 			}
 		}
 		else 
 		{
+			vx = 0;
 			flippedOver = true;
 			clock.restart();
 		}
@@ -294,6 +295,11 @@ void Turtle::setSurprised()
 	state = 4;
 }
 
+void Turtle::setFlippedOver()
+{
+	state = 5;
+}
+
 void Turtle::setInPipe(int PipeDirection)
 {
 	vx = 0;
@@ -313,14 +319,21 @@ bool Turtle::getIsHide()
 
 void Turtle::changeDirection()
 {
-	if (heading == Direction::LEFT)
+	if (state != 5)
 	{
-		vx = speed;
-		update(Direction::RIGHT);
+		if (heading == Direction::LEFT)
+		{
+			vx = speed;
+			update(Direction::RIGHT);
+		}
+		else
+		{
+			vx = -speed;
+			update(Direction::LEFT);
+		}
 	}
-	else
-	{ 
-		vx = -speed;
-		update(Direction::LEFT);
+	else 
+	{
+		update(Direction::FIXED);
 	}
 }

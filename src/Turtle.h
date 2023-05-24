@@ -17,6 +17,7 @@ public:
 	
 	void resetState();
 	void setSurprised();
+	void setFlippedOver();
 	void setInPipe(int PipeDirection);
 	bool getIsHide();
 	void changeDirection();
