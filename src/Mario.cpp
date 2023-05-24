@@ -18,6 +18,13 @@ Mario::Mario()
 void Mario::update(Direction dir)
 {
 	checkSlide(dir);
+
+	if ((heading == Direction::RIGHT && dir == Direction::RIGHT)
+		|| (heading == Direction::LEFT && dir == Direction::LEFT))
+		movement_acc++;
+	else
+		movement_acc = 0;
+
 	Direction prev_dir = heading;
 	heading = dir;
 	switch (state)
@@ -234,7 +241,7 @@ void Mario::initializeMario()
 
 	animation_offset = _DEF_ANIMATION_OFFSET;
 	sliding_offset = 10;
-		
+	movement_acc = 0;
 
 	state = 1;
 	sprite.setTexture(textures[state]);
@@ -251,10 +258,11 @@ void Mario::move(void)
 
 void Mario::checkSlide(Direction dir)
 {
-	if (heading != Direction::FIXED && heading != dir)
+	if (heading != Direction::FIXED && heading != dir && movement_acc > 10)
 	{
 		state = 5;
 	}
+
 	// Other jumping slide effect is handled in resetState function
 	return;
 }

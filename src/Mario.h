@@ -24,4 +24,5 @@ private:
 	const float JUMP_SPEED = _MARIO_JUMP_SPEED;
 	const float MAX_SPEED = _MARIO_MAX_SPEED;
 	bool jumping;
+	int movement_acc;
 };
