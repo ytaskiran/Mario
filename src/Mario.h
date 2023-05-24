@@ -9,7 +9,7 @@ public:
 	Mario();											// Constructor
 
 	virtual void update(Direction direction) override;	// Moves Mario left or right
-	virtual void jump(bool down) override;				// Makes Mario jump (if down is true, Mario jumps down off the edge of a floor, otherwise he jumps up)
+	virtual void jump() override;						// Makes Mario jump 
 	virtual void fall(void) override;					// Makes Mario fall straight down when he dies
 	virtual void move(void) override;
 	bool isJumping();

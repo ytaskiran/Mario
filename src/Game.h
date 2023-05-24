@@ -14,11 +14,12 @@ class ScoreBoard
 {
 public:
 	void setScore(int score);	// Sets the score 
+	int getScore();				// Gets the score
 	void setLives(int lives);	// Sets the remaining lives 
 	int getLives(void);			// Gets the remaining lives
 
 private:
-	std::string score;			// Current score 
+	int score;					// Current score 
 	int lives;					// Remaining life count for Mario
 };
 
@@ -45,7 +46,7 @@ public:
 	Status status;
 
 private:
-	void drawLives();
+	void drawGameInfo();
 	bool onFloor(Object* object);							// Checks if object is touching a floor surface
 	void checkCollusion(Object* o1, Object* o2);			// Checks if Mario has hit a turtle and from which side
 	void checkCollusion();

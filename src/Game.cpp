@@ -5,6 +5,7 @@ Game::Game(sf::RenderWindow* window) : window_(window), status(Status::MainMenu)
     lives_texture.loadFromFile("../assets/mariohead.png");
     mario_menu.loadFromFile("../assets/mario_menu.png");
     scoreboard_.setLives(MARIO_MAX_LIVES);
+    scoreboard_.setScore(0);
 }
 
 // The function called in every frame. It draws game map, Mario and turtle objects according to their headings.
@@ -46,11 +47,11 @@ void Game::drawBackground()
     }
 
     // Draw the left Mario lives 
-    drawLives();
+    drawGameInfo();
 }
            
-// Draw the left Mario lives 
-void Game::drawLives()
+// Draw the score and remaining lives
+void Game::drawGameInfo()
 {
     sprite.setTexture(lives_texture);
     sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);
@@ -59,11 +60,17 @@ void Game::drawLives()
     // Draw lives according to left lives. 
     for (int i = 1; i <= scoreboard_.getLives(); i++)
     {
-        sprite.setPosition(40 * i, 20);
+        sprite.setPosition(175.f + 40.f * i, 30.f);
         window_->draw(sprite);
     }
 
     sprite.setScale(1, 1);
+
+    std::string score("Score: ");
+    score += std::to_string(scoreboard_.getScore());
+    sf::Text score_text(score, font, 25);
+    score_text.setPosition(30.f, 12.f);
+    window_->draw(score_text);
 }
 
 // Create a new mario and insert it objects_ array
@@ -195,7 +202,7 @@ void Game::updateObjects()
         {
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
             {
-                object->jump(false);
+                object->jump();
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             {
@@ -290,8 +297,8 @@ void Game::checkCollusion(Object* o1, Object* o2)
         turtle_bounding.setOutlineColor(sf::Color::White);
         turtle_bounding.setOutlineThickness(1);
 
-        window_->draw(mario_bounding);
-        window_->draw(turtle_bounding);
+        /*window_->draw(mario_bounding);
+        window_->draw(turtle_bounding);*/
 
         if (mario_right < turtle_left || mario_left > turtle_right || mario_bottom < turtle_top || mario_top > turtle_bottom)
         {
@@ -301,12 +308,21 @@ void Game::checkCollusion(Object* o1, Object* o2)
         if (mario_bottom <= turtle_top + above_collision_offset)
         {
             o2->fall();
-            std::cout << "Turtle dead!!!" << std::endl;
+            scoreboard_.setScore(scoreboard_.getScore() + 100);
         }
         else
         {
-            o1->fall();
-            std::cout << "Mario dies!!!" << std::endl;
+            if (dynamic_cast<Turtle*>(o2)->getFlippedOver())
+            {
+                o2->fall();
+                scoreboard_.setScore(scoreboard_.getScore() + 100);
+            }
+            else
+            {
+                o1->fall();
+                scoreboard_.setLives(scoreboard_.getLives() - 1);
+            }
+            
         }
     }
 
@@ -421,8 +437,14 @@ void ScoreBoard::setScore(int score)
     this->score = score;
 }
 
-// Setter function for the Mario lives
+// Getter function for the game score
+int ScoreBoard::getScore(void)
+{
+    return score;
+}
 
+
+// Setter function for the Mario lives
 void ScoreBoard::setLives(int lives)
 {
     this->lives = lives;

@@ -11,13 +11,13 @@ public:
 
 	void update(Direction dir);
 	virtual void move() override;						// Moves turtle left or right
-	virtual void jump(bool down) override;				// Makes turtle jump (if down is true, turtle jumps down off the edge of a floor.Down being false can be
-														// optionally used for fly animation of turtle when it is hit from underneath by Mario)
+	virtual void jump() override;						// Makes turtle jump 
 	virtual void fall(void) override;					// Makes turtle fall when it dies
 	
 	void resetState();
 	void setSurprised();
 	void setFlippedOver();
+	bool getFlippedOver();
 	void setInPipe(int PipeDirection);
 	bool getIsHide();
 	void changeDirection();

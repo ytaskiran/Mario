@@ -95,7 +95,7 @@ void Object::resetState()
 
 }
 
-void Object::jump(bool down)
+void Object::jump()
 {
 
 }

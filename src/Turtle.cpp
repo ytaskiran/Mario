@@ -262,16 +262,10 @@ void Turtle::move()
 }
 
 // Sets the y velocity and isJumping variable. It is used to start the jumping state.
-void Turtle::jump(bool down)
+void Turtle::jump()
 {
-	if (down)
-	{
-		vy = GRAVITY;
-	}
-	else
-	{
-		vy = -20; // Bu deðer gravityden fazla olacak. Yukarý zýpladýðýmýzda hýzlýca yükseliriz 
-	}
+	
+	vy = -20; 
 	isJumping = true;
 }
 
@@ -301,6 +295,11 @@ void Turtle::setFlippedOver()
 {
 	vy = -10;
 	state = 5;
+}
+
+bool Turtle::getFlippedOver()
+{
+	return flippedOver;
 }
 
 void Turtle::setInPipe(int PipeDirection)

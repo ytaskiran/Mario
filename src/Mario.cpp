@@ -196,19 +196,11 @@ void Mario::update(Direction dir)
 }
 
 // Sets the Mario y velocity and state in jump state.
-void Mario::jump(bool down)
+void Mario::jump()
 {
-	if (!jumping) 
+	if (!jumping && !is_falling) 
 	{
-		// TODO how does this down var help?
-		if (down)
-		{
-			vy = GRAVITY;
-		}
-		else
-		{
-			vy = JUMP_SPEED;
-		}
+		vy = JUMP_SPEED;
 		state = 6;
 		jumping = true;
 	}
@@ -218,6 +210,7 @@ void Mario::jump(bool down)
 void Mario::fall(void)
 {
 	is_falling = true;
+	vy = -20;
 	state = 7;
 }
 
