@@ -7,14 +7,19 @@ Game::Game(sf::RenderWindow* window) : window_(window), status(Status::MainMenu)
     scoreboard_.setLives(MARIO_MAX_LIVES);
 }
 
+// The function called in every frame. It draws game map, Mario and turtle objects according to their headings.
 void Game::drawBackground()
 {
+    // First draw the game map.
     map_.drawMap(window_);
 
+    // Iterate over the objects and draw according to their headings
     for (Object* object : objects_)
     {        
+        // Mario case
         if (dynamic_cast<Mario*>(object) != nullptr)
         {
+            // If else statements to determine heading
             if (object->getVelocityX() > 0 || (object->getVelocityX() == 0 && object->getHeading() == Object::Direction::RIGHT))
                 object->draw(window_, -0.6, 0.6);
             else if (object->getVelocityX() < 0 || (object->getVelocityX() == 0 && object->getHeading() == Object::Direction::LEFT))
@@ -24,8 +29,10 @@ void Game::drawBackground()
             else
                 object->draw(window_, 0.6, 0.6);
         }
+        // Turtle case
         else
         {
+            // If else statements to determine heading
             if (!dynamic_cast<Turtle*>(object)->getIsHide())
             {
                 if (object->getVelocityX() > 0 || (object->getVelocityX() == 0 && object->getHeading() == Object::Direction::RIGHT))
@@ -38,16 +45,18 @@ void Game::drawBackground()
         }
     }
 
+    // Draw the left Mario lives 
     drawLives();
 }
            
-
+// Draw the left Mario lives 
 void Game::drawLives()
 {
     sprite.setTexture(lives_texture);
     sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);
     sprite.setScale(0.8, 0.8);
 
+    // Draw lives according to left lives. 
     for (int i = 1; i <= scoreboard_.getLives(); i++)
     {
         sprite.setPosition(40 * i, 20);
@@ -57,11 +66,14 @@ void Game::drawLives()
     sprite.setScale(1, 1);
 }
 
+// Create a new mario and insert it objects_ array
 void Game::createMario()
 {
     objects_.emplace_back(new Mario());
 }
 
+// Create given number turtles and instert it objects_ array. 
+// Turtles initialized in map with a delay.  
 void Game::createTurtles(int num) 
 {
     for (int i = 0; i < num; i++) 
@@ -70,21 +82,26 @@ void Game::createTurtles(int num)
         pos.y = 75.0f;
         Turtle* turtle;
         
+        // Turtles initialized left and right in turn
         if (i % 2 == 0 )
         {
-            turtle = new Turtle(i * 75, Object::Direction::RIGHT);
+            // i * 50 : Delay time for initializing in map
+            turtle = new Turtle(i * 50, Object::Direction::RIGHT);
             pos.x = 118.0f;
             lastTurtleDir = Object::Direction::LEFT;
         }
         else
         {
-            turtle = new Turtle(i * 75, Object::Direction::LEFT);
+            // i * 50 : Delay time for initializing in map
+            turtle = new Turtle(i * 50, Object::Direction::LEFT);
             pos.x = 680.0f;
             lastTurtleDir = Object::Direction::RIGHT;
         }
 
+        // Sets the turtle initial pos according to right or left initialization
         turtle->setPosition(pos);
 
+        // Adds the turtle to objects_ array
         objects_.emplace_back(turtle);
     }
 
@@ -121,6 +138,7 @@ int Game::mainMenu()
     return 0;
 }
 
+// Chekcs given object is on floor or not
 bool Game::onFloor(Object* object)
 {
     float x_pixel{};
@@ -167,6 +185,7 @@ bool Game::onFloor(Object* object)
     return false;
 }
 
+// It is called in every frame. The function updates the every object in the objects_ vector.
 void Game::updateObjects()
 {
     for (Object* object : objects_)
@@ -387,6 +406,7 @@ void Game::checkObstacle(Object* object)
     }
 }
 
+// Destructor funtion to delete dynamic allocated objects
 Game::~Game()
 {
     for (Object* object : objects_)
@@ -395,16 +415,20 @@ Game::~Game()
     }
 }
 
+// Setter function for the ScoreBoard score
 void ScoreBoard::setScore(int score)
 {
     this->score = score;
 }
+
+// Setter function for the Mario lives
 
 void ScoreBoard::setLives(int lives)
 {
     this->lives = lives;
 }
 
+// Getter function for the Mario lives
 int ScoreBoard::getLives(void)
 {
     return lives;
