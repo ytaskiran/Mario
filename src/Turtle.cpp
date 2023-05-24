@@ -317,6 +317,7 @@ void Turtle::setFlippedOver()
 	state = 5;
 }
 
+// Getter function for the flippedOver variable.
 bool Turtle::getFlippedOver()
 {
 	return flippedOver;
@@ -379,11 +380,4 @@ void Turtle::setInitDelay(int delay)
 void Turtle::setHeading(Direction dir)
 {
 	heading = dir;
-}
-
-// Getter function for the flippedOver variable.
-bool Turtle::getFlippedOver()
-{
-	return flippedOver;
-
 }
