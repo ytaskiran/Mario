@@ -86,14 +86,14 @@ void Game::createTurtles(int num)
         if (i % 2 == 0 )
         {
             // i * 50 : Delay time for initializing in map
-            turtle = new Turtle(i * 50, Object::Direction::RIGHT);
+            turtle = new Turtle(i * 100 + 10, Object::Direction::RIGHT);
             pos.x = 118.0f;
             lastTurtleDir = Object::Direction::LEFT;
         }
         else
         {
             // i * 50 : Delay time for initializing in map
-            turtle = new Turtle(i * 50, Object::Direction::LEFT);
+            turtle = new Turtle(i * 100 + 5, Object::Direction::LEFT);
             pos.x = 680.0f;
             lastTurtleDir = Object::Direction::RIGHT;
         }
@@ -290,8 +290,8 @@ void Game::checkCollusion(Object* o1, Object* o2)
         turtle_bounding.setOutlineColor(sf::Color::White);
         turtle_bounding.setOutlineThickness(1);
 
-        /*window_->draw(mario_bounding);
-        window_->draw(turtle_bounding);*/
+        window_->draw(mario_bounding);
+        window_->draw(turtle_bounding);
 
         if (mario_right < turtle_left || mario_left > turtle_right || mario_bottom < turtle_top || mario_top > turtle_bottom)
         {

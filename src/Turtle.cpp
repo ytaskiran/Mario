@@ -299,6 +299,7 @@ void Turtle::setSurprised()
 
 void Turtle::setFlippedOver()
 {
+	vy = -10;
 	state = 5;
 }
 
