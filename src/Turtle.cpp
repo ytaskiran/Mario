@@ -24,6 +24,7 @@ void Turtle::initializeTurtle()
 	isJumping = false;
 	flippedOver = false;
 	isInPipe = false;
+	surprised = false;
 	sprite.setTexture(textures[state]);
 	sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);
 	// position iniatilize et. Position dýþardan alabilirsin. Bu durumda initialize fonksiyonunu dýþardan çaðýrýrýz.
@@ -95,9 +96,18 @@ void Turtle::update(Direction dir)
 	}
 	// Checks turtle is falling or not. If falling, turtle continue to fall, until it leaves the frame.
 	else if (is_falling) 
-	{
-		vx = 0;
-		vy += GRAVITY;
+	{	
+		if (pos.y < SCREEN_HEIGHT)
+		{
+			vx = 0;
+			vy += GRAVITY;
+		}
+		else if (!isHide)
+		{
+			vx = 0;
+			vy = 0;
+			isHide = true;
+		}
 		return;
 	}
 
@@ -200,25 +210,25 @@ void Turtle::update(Direction dir)
 		// Þaþýrma durumu. Yön deðiþitirecek.
 		if (surprised)
 		{
-			if (clock.getElapsedTime().asSeconds() >= 1)
+			vx = 0;
+			if (clock.getElapsedTime().asSeconds() >= 5)
 			{
-				vx = -vx;
-				if (vx > 0)
+				if (prev_heading == Direction::RIGHT)
 				{
-					dir = Direction::RIGHT;
-					heading = dir;
+					vx = -speed;
 				}
 				else 
 				{
-					dir = Direction::LEFT;
-					heading = dir;
+					vx = speed;
 				}
 				state = 1;
+				surprised = false;
 			}
 		}
 		else 
 		{
 			surprised = true;
+			vx = 0;
 			clock.restart();
 		}
 		
@@ -226,7 +236,7 @@ void Turtle::update(Direction dir)
 	case 5:
 		if (flippedOver) 
 		{
-			if (clock.getElapsedTime().asSeconds() >= 8)
+			if (clock.getElapsedTime().asSeconds() >= 1)
 			{
 				state = 1;
 				speed += 1; // Keep moving faster as it has been aggravated
@@ -294,7 +304,17 @@ void Turtle::resetState()
 // Sets the turtle state surprised state. It is used when two turtle touch each other.
 void Turtle::setSurprised()
 {
-	state = 4;
+	//setPosition(sf::Vector2f(pos.x,pos.y - 5));
+	if (!surprised)
+	{
+		prev_heading = heading;
+		state = 4;
+	}
+}
+
+bool Turtle::getSurprised()
+{
+	return surprised;
 }
 
 void Turtle::setFlippedOver()
@@ -305,14 +325,25 @@ void Turtle::setFlippedOver()
 
 void Turtle::setInPipe(int PipeDirection)
 {
-	vx = 0;
-	vy = 0;
+	if (!isInPipe)
+	{
+		vx = 0;
+		vy = 0;
 
-	pipeDir = PipeDirection;
-	pipeTimeout = 100;
+		if (PipeDirection == 0)
+		{
+			setPosition(sf::Vector2f(100, 510));
+		}
+		else
+		{
+			setPosition(sf::Vector2f(720, 510));
+		}
+		pipeDir = PipeDirection;
+		pipeTimeout = 100;
 
-	isInPipe = true;
-	isHide = true;
+		isInPipe = true;
+		isHide = true;
+	}
 }
 
 bool Turtle::getIsHide() 
@@ -322,7 +353,7 @@ bool Turtle::getIsHide()
 
 void Turtle::changeDirection()
 {
-	if (state != 5)
+	if (state != 5 && state != 4)
 	{
 		if (heading == Direction::LEFT)
 		{
@@ -339,4 +370,11 @@ void Turtle::changeDirection()
 	{
 		update(Direction::FIXED);
 	}
+}
+
+// Getter function for the flippedOver variable.
+bool Turtle::getFlippedOver()
+{
+	return flippedOver;
+
 }

@@ -17,11 +17,12 @@ public:
 	
 	void resetState();
 	void setSurprised();
+	bool getSurprised();
 	void setFlippedOver();
 	void setInPipe(int PipeDirection);
 	bool getIsHide();
 	void changeDirection();
-
+	bool getFlippedOver();
 private:
 	float speed; 
 	void initializeTurtle();

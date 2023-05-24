@@ -313,7 +313,34 @@ void Game::checkCollusion(Object* o1, Object* o2)
     // 2 turtles case (surprise effect)
     else
     {
+        if (!dynamic_cast<Turtle*>(o1)->getIsHide() && !dynamic_cast<Turtle*>(o2)->getIsHide() &&  o1->boundingBox().intersects(o2->boundingBox()))
+        {
+            dynamic_cast<Turtle*>(o1)->setSurprised();
+            dynamic_cast<Turtle*>(o2)->setSurprised();
+            if (o1->getPosition().x > o2->getPosition().x)
+            {
+                if (!dynamic_cast<Turtle*>(o1)->getSurprised())
+                {
+                    o1->setPosition(sf::Vector2f(o1->getPosition().x + 20, o1->getPosition().y));
+                }
+                if (!dynamic_cast<Turtle*>(o1)->getSurprised())
+                {
+                    o2->setPosition(sf::Vector2f(o2->getPosition().x - 20, o2->getPosition().y));
+                }
+            }
+            else
+            {
+                if (!dynamic_cast<Turtle*>(o1)->getSurprised())
+                {
+                    o1->setPosition(sf::Vector2f(o1->getPosition().x - 20, o1->getPosition().y));
+                }
+                if (!dynamic_cast<Turtle*>(o1)->getSurprised())
+                {
+                    o2->setPosition(sf::Vector2f(o2->getPosition().x + 20, o2->getPosition().y));
+                }
+            }
         
+        }
     }
 }
 
