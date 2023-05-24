@@ -4,6 +4,7 @@ Game::Game(sf::RenderWindow* window) : window_(window), status(Status::MainMenu)
 {
     lives_texture.loadFromFile("../assets/mariohead.png");
     mario_menu.loadFromFile("../assets/mario_menu.png");
+    font.loadFromFile("../assets/font.ttf");
     scoreboard_.setLives(MARIO_MAX_LIVES);
     scoreboard_.setScore(0);
 }
@@ -112,14 +113,8 @@ void Game::createTurtles(int num)
 
 }
 
-int Game::mainMenu()
+void Game::mainMenu()
 {
-    if (!font.loadFromFile("../assets/font.ttf"))
-    {
-        std::cout << "Unable to load the font file. " << std::endl;
-        return EXIT_FAILURE;
-    }
-
     sf::Text welcome_text("Welcome to the Mario", font, 40);
     welcome_text.setPosition(SCREEN_WIDTH / 2, 100.f);
     welcome_text.setOrigin(welcome_text.getLocalBounds().width / 2, welcome_text.getLocalBounds().height / 2);
@@ -139,8 +134,42 @@ int Game::mainMenu()
     window_->draw(welcome_text);
     window_->draw(start_text);
     window_->draw(mario);
+}
 
-    return 0;
+void Game::gameOver()
+{
+    sf::Text game_over("GAME OVER", font, 64);
+    game_over.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100.f);
+    game_over.setOrigin(game_over.getLocalBounds().width / 2, game_over.getLocalBounds().height / 2);
+    game_over.setFillColor(sf::Color::Red);
+    game_over.setStyle(sf::Text::Bold);
+
+    sf::Text return_menu("Press ENTER to Return Main Menu", font, 32);
+    return_menu.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100.f);
+    return_menu.setOrigin(return_menu.getLocalBounds().width / 2, return_menu.getLocalBounds().height / 2);
+    return_menu.setFillColor(sf::Color::White);
+    return_menu.setStyle(sf::Text::Bold);
+
+    window_->draw(game_over);
+    window_->draw(return_menu);
+}
+
+void Game::won()
+{
+    sf::Text won("YOU WON", font, 64);
+    won.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 100.f);
+    won.setOrigin(won.getLocalBounds().width / 2, won.getLocalBounds().height / 2);
+    won.setFillColor(sf::Color::Green);
+    won.setStyle(sf::Text::Bold);
+
+    sf::Text return_menu("Press ENTER to Return Main Menu", font, 32);
+    return_menu.setPosition(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100.f);
+    return_menu.setOrigin(return_menu.getLocalBounds().width / 2, return_menu.getLocalBounds().height / 2);
+    return_menu.setFillColor(sf::Color::White);
+    return_menu.setStyle(sf::Text::Bold);
+
+    window_->draw(won);
+    window_->draw(return_menu);
 }
 
 int Game::getScore()
@@ -214,7 +243,7 @@ void Game::updateObjects()
         {
             if (marioFail(dynamic_cast<Mario*>(object)))
             {
-                restartGame();
+                restartGame(false);
                 return;
             }
 
@@ -448,9 +477,9 @@ void Game::checkObstacle(Object* object)
                     if (dynamic_cast<Turtle*>(object) != nullptr)
                     {
                         if (dynamic_cast<Turtle*>(object)->boundingBox().contains(x_pixel, y_pixel - 20))
-                    {
-                        dynamic_cast<Turtle*>(object)->setFlippedOver();
-                    }
+                        {
+                            dynamic_cast<Turtle*>(object)->setFlippedOver();
+                        }
                     }
                 }
             }
@@ -471,7 +500,7 @@ void Game::checkObstacle(Object* object)
     }
 }
 
-void Game::restartGame()
+void Game::restartGame(bool begin)
 {
     for (int i = 0; i < objects_.size(); i++)
     {
@@ -501,6 +530,9 @@ void Game::restartGame()
         }
         objects_[i]->initialize();
     }
+
+    if (begin)
+        scoreboard_.setLives(3);
 
     scoreboard_.setScore(0);
 }

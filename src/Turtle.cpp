@@ -51,7 +51,7 @@ void Turtle::initialize()
 // Update the Turtle velocity, state and heading. Is is called in every frame.
 void Turtle::update(Direction dir)
 {
-	speed += 0.0004;
+	speed += 0.001;
 	speed = std::min(MAX_SPEED_X, speed);
 	Direction prev_dir = heading;
 	heading = dir;
@@ -207,7 +207,7 @@ void Turtle::update(Direction dir)
 		state = 1;
 		break;
 	case 4:
-		// Şaşırma durumu. Yön değişitirecek.
+		// Surprise state, change directions
 		if (surprised)
 		{
 			vx = 0;
@@ -236,7 +236,7 @@ void Turtle::update(Direction dir)
 	case 5:
 		if (flippedOver) 
 		{
-			if (clock.getElapsedTime().asSeconds() >= 1)
+			if (clock.getElapsedTime().asSeconds() >= 8)
 			{
 				state = 1;
 				speed += 1; // Keep moving faster as it has been aggravated

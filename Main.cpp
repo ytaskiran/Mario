@@ -30,7 +30,13 @@ int main()
             {
                 if (event.key.code == sf::Keyboard::Enter)
                 {
-                    game.status =  Game::Status::Begin;
+                    if (game.status == Game::Status::MainMenu)
+                        game.status = Game::Status::Begin;
+                    else if (game.status == Game::Status::GameOver || game.status == Game::Status::Won)
+                    {
+                        game.status = Game::Status::MainMenu;
+                        game.restartGame(true);
+                    }
                 }
             }
         }
@@ -45,11 +51,19 @@ int main()
 
         if (game.status == Game::Status::MainMenu)
         {
-            window.clear(sf::Color(18, 23, 53));
-            if (game.mainMenu())
-                return EXIT_FAILURE;
+            window.clear(sf::Color(15, 15, 40));
+            game.mainMenu();
         }
-
+        else if (game.status == Game::Status::GameOver)
+        {
+            window.clear(sf::Color(20, 5, 5));
+            game.gameOver();
+        }
+        else if (game.status == Game::Status::Won)
+        {
+            window.clear(sf::Color(5, 20, 5));
+            game.won();
+        }
         else if (game.status == Game::Status::Begin)
         {
             game.updateObjects();

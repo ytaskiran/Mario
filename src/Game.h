@@ -32,7 +32,10 @@ public:
 	void createMario();
 	void createTurtles(int);
 	void updateObjects();
-	int mainMenu();
+	void restartGame(bool begin);
+	void mainMenu();
+	void gameOver();
+	void won();
 	int getScore();
 	int getRemainingLives();
 	~Game();
@@ -54,7 +57,6 @@ private:
 	void checkCollusion();
 	void checkObstacle(Object* object);
 	bool marioFail(Mario* m);
-	void restartGame();
 
 	sf::RenderWindow* window_;
 	TileMap map_{};
