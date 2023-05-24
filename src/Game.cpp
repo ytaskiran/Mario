@@ -321,22 +321,26 @@ void Game::checkCollusion(Object* o1, Object* o2)
             {
                 if (!dynamic_cast<Turtle*>(o1)->getSurprised())
                 {
-                    o1->setPosition(sf::Vector2f(o1->getPosition().x + 20, o1->getPosition().y));
+                    if (o1->getPosition().x + 10 < SCREEN_WIDTH)
+                        o1->setPosition(sf::Vector2f(o1->getPosition().x + 10, o1->getPosition().y));
                 }
                 if (!dynamic_cast<Turtle*>(o1)->getSurprised())
                 {
-                    o2->setPosition(sf::Vector2f(o2->getPosition().x - 20, o2->getPosition().y));
+                    if (o2->getPosition().x - 5 > 0)
+                        o2->setPosition(sf::Vector2f(o2->getPosition().x - 10, o2->getPosition().y));
                 }
             }
             else
             {
                 if (!dynamic_cast<Turtle*>(o1)->getSurprised())
                 {
-                    o1->setPosition(sf::Vector2f(o1->getPosition().x - 20, o1->getPosition().y));
+                    if (o1->getPosition().x - 5 > 0)
+                        o1->setPosition(sf::Vector2f(o1->getPosition().x - 10, o1->getPosition().y));
                 }
                 if (!dynamic_cast<Turtle*>(o1)->getSurprised())
                 {
-                    o2->setPosition(sf::Vector2f(o2->getPosition().x + 20, o2->getPosition().y));
+                    if (o2->getPosition().x + 10 < SCREEN_WIDTH)
+                        o2->setPosition(sf::Vector2f(o2->getPosition().x + 10, o2->getPosition().y));
                 }
             }
         

@@ -211,7 +211,7 @@ void Turtle::update(Direction dir)
 		if (surprised)
 		{
 			vx = 0;
-			if (clock.getElapsedTime().asSeconds() >= 5)
+			if (clock.getElapsedTime().asSeconds() >= 1)
 			{
 				if (prev_heading == Direction::RIGHT)
 				{
