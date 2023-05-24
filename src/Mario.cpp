@@ -1,6 +1,6 @@
 #include <Mario.h>
 
-
+// Constructor
 Mario::Mario()
 {
 	char path[64];
@@ -11,7 +11,7 @@ Mario::Mario()
 		textures[i].loadFromFile(path);
 	}
 
-	initialize();
+	initialize(); // Initialize Mario
 }
 
 // Update the state and velocity of the Mario, according to the given direction.
@@ -27,9 +27,10 @@ void Mario::update(Direction dir)
 
 	Direction prev_dir = heading;
 	heading = dir;
+	// State machine
 	switch (state)
 	{
-		case 1:
+		case 1: // Stationary
 			if (dir == Direction::FIXED)
 			{
 				vx = 0;
@@ -45,8 +46,8 @@ void Mario::update(Direction dir)
 				state = 2;
 			}
 			break;
-		case 2:
-			if (animation_offset > 0)
+		case 2: // Run animation 
+			if (animation_offset > 0) // Offset for smooth animation
 			{
 				animation_offset--;
 				break;
@@ -84,7 +85,7 @@ void Mario::update(Direction dir)
 				}
 			}
 			break;
-		case 3:
+		case 3: // Run animation
 			if (animation_offset > 0)
 			{
 				animation_offset--;
@@ -122,7 +123,7 @@ void Mario::update(Direction dir)
 				}
 			}
 			break;
-		case 4:
+		case 4: // Run animation
 			if (animation_offset > 0)
 			{
 				animation_offset--;
@@ -165,7 +166,7 @@ void Mario::update(Direction dir)
 			else
 				sliding_offset = 10;
 				state = 1;
-		case 6:
+		case 6: // Jump
 			if (dir == Direction::FIXED)
 			{
 				vx = 0;
@@ -179,14 +180,15 @@ void Mario::update(Direction dir)
 				vx = -SPEED;
 			}
 			break;
-		case 7:
+		case 7: // Falling state
 		{
 			vx = 0;
-			vy += GRAVITY; // Ekranýn aþaðýsýna düþmeye devam etsin. // Hýzýný arttýralým.
+			vy += GRAVITY; 
 			break;
 		}
 	}
 
+	// Offset for smoother motion animation
 	if (animation_offset == 0)
 		animation_offset = _DEF_ANIMATION_OFFSET;
 	animation_offset--;
@@ -251,6 +253,7 @@ void Mario::move(void)
 	pos = sprite.getPosition();
 }
 
+// Checks the sliding effect
 void Mario::checkSlide(Direction dir)
 {
 	if (heading != Direction::FIXED && heading != dir && movement_acc > 10)
@@ -262,6 +265,7 @@ void Mario::checkSlide(Direction dir)
 	return;
 }
 
+// Get if Mario is in jumping state
 bool Mario::isJumping()
 {
 	return jumping;

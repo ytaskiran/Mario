@@ -4,42 +4,35 @@
 #include "TileMap.h"
 
 
+// Constructor
 TileMap::TileMap()
 {
     initializeMap();
 }
 
+// Initialize the map
 void TileMap::initializeMap()
 {
+    // Loads the textures
     floor_texture_.loadFromFile("../assets/floor.png");
     brick_texture_.loadFromFile("../assets/brick.png");
     pipe_texture_.loadFromFile("../assets/pipe.png");
     pipe_s_texture_.loadFromFile("../assets/pipeS.png");
 
-    /* auto floor_size = floor_texture_.getSize();
-     auto brick_size = brick_texture_.getSize();
-     auto pipe_size = pipe_texture_.getSize();
-     auto pipe_s_size = pipe_s_texture_.getSize();
-
-     std::cout << "Tile height: " << TILE_HEIGHT << std::endl;
-     std::cout << "Tile width: " << TILE_WIDTH << std::endl;
-
-     std::cout << "Floor x: " << floor_size.x << " y: " << floor_size.y << std::endl;
-     std::cout << "Brick x: " << brick_size.x << " y: " << brick_size.y << std::endl;
-     std::cout << "Pipe x: " << pipe_size.x << " y: " << pipe_size.y << std::endl;
-     std::cout << "PipeS x: " << pipe_s_size.x << " y: " << pipe_s_size.y << std::endl;*/
-
+    // Locations of the bricks in the map
     auto brick_locations = std::list<std::vector<size_t>>{  // {row, col_left, col_right}
         {10,0,22}, {10,TILE_WIDTH - 23,TILE_WIDTH - 1}, {18,16,TILE_WIDTH - 16},
         {20,0,4}, {20, TILE_WIDTH - 5, TILE_WIDTH - 1}, {28,0,18}, {28,TILE_WIDTH - 19,TILE_WIDTH - 1}
     };
 
+    // Initialized the tile map member variable
     tile_map_ = std::vector<std::vector<TileType>>(TILE_HEIGHT, std::vector<TileType>(TILE_WIDTH, TileType::Empty));
 
     for (size_t r = 0; r < TILE_HEIGHT; r++)
     {
         for (size_t c = 0; c < TILE_WIDTH; c++)
         {
+            // Brick tiles are setted in the tile map
             if (brick_locations.size() > 0)
             {
                 std::vector<size_t> brick_location = brick_locations.front();
@@ -52,9 +45,11 @@ void TileMap::initializeMap()
                 }
             }
 
+            // Tiles are setted in the map 
+
             if (r >= TILE_HEIGHT - FLOOR_HEIGHT)
             {
-                tile_map_[r][c] = TileType::Floor;
+                tile_map_[r][c] = TileType::Floor; 
             }
             else if (r >= TILE_HEIGHT - 8 && r < TILE_HEIGHT - 4 && c >= 0 && c < 7)
             {
@@ -80,11 +75,13 @@ void TileMap::initializeMap()
     }
 }
 
+// Draws the background map
 void TileMap::drawMap(sf::RenderWindow* window)
 {
     const size_t ROWS = tile_map_.size();
     const size_t COLS = tile_map_[0].size();
 
+    // flags for drawing both of the pipe types in each side
     bool left_pipe = false;
     bool right_pipe = false;
     bool left_pipe_s = false;
@@ -158,6 +155,7 @@ void TileMap::drawMap(sf::RenderWindow* window)
     }
 }
 
+// Get the tile type of the tile
 TileType TileMap::getTile(size_t row, size_t col)
 {
     return tile_map_[row][col];

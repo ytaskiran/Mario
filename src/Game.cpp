@@ -356,7 +356,7 @@ void Game::checkcollision(Object* o1, Object* o2)
     const float collision_y_offset = 20.f;
     const float above_collision_offset = 20.f;
 
-    // collision case between mario and turtle
+    // Collision case between mario and turtle
     if (dynamic_cast<Mario*>(o1) != nullptr)
     {
         // Get the mario corner points 
@@ -365,40 +365,32 @@ void Game::checkcollision(Object* o1, Object* o2)
         size_t mario_top      =  o1->sprite.getPosition().y - o1->sprite.getLocalBounds().height / 2 + collision_y_offset;
         size_t mario_bottom   =  o1->sprite.getPosition().y + o1->sprite.getLocalBounds().height / 2 - collision_y_offset;
 
-        sf::RectangleShape mario_bounding(sf::Vector2f(mario_right - mario_left, mario_bottom - mario_top));
-        mario_bounding.setPosition(mario_left, mario_top);
-        mario_bounding.setFillColor(sf::Color::Transparent);
-        mario_bounding.setOutlineColor(sf::Color::White);
-        mario_bounding.setOutlineThickness(1);
-
         size_t turtle_left    =  o2->sprite.getPosition().x - o2->sprite.getLocalBounds().width / 2 + collision_x_offset + 5.f;
         size_t turtle_right   =  o2->sprite.getPosition().x + o2->sprite.getLocalBounds().width / 2 - collision_x_offset;
         size_t turtle_top     =  o2->sprite.getPosition().y - o2->sprite.getLocalBounds().height / 2 + collision_y_offset;
         size_t turtle_bottom  =  o2->sprite.getPosition().y + o2->sprite.getLocalBounds().height / 2 - collision_y_offset;
 
-        sf::RectangleShape turtle_bounding(sf::Vector2f(turtle_right - turtle_left, turtle_bottom - turtle_top));
-        turtle_bounding.setPosition(turtle_left, turtle_top);
-        turtle_bounding.setFillColor(sf::Color::Transparent);
-        turtle_bounding.setOutlineColor(sf::Color::White);
-        turtle_bounding.setOutlineThickness(1);
-
+        // If there is no overlap, return
         if (mario_right < turtle_left || mario_left > turtle_right || mario_bottom < turtle_top || mario_top > turtle_bottom)
         {
             return;
         }
-
+        // Turtle dies since Mario hits from above
         if (mario_bottom <= turtle_top + above_collision_offset)
         {
             o2->fall();
             scoreboard_.setScore(scoreboard_.getScore() + 100);
         }
+        // Mario case
         else
         {
+            // If turtle is flipped, Mario still wins
             if (dynamic_cast<Turtle*>(o2)->getFlippedOver())
             {
                 o2->fall();
                 scoreboard_.setScore(scoreboard_.getScore() + 100);
             }
+            // Otherwise, if hits from any other direction, Mario dies
             else
             {
                 o1->fall();
@@ -517,20 +509,22 @@ void Game::checkObstacle(Object* object)
                     {
                         if (dynamic_cast<Turtle*>(object)->boundingBox().contains(x_pixel, y_pixel - 20))
                         {
-                            dynamic_cast<Turtle*>(object)->setFlippedOver();
+                            dynamic_cast<Turtle*>(object)->setFlippedOver(); // Turtle is flipped over when Mario hits from the brick below
                         }
                     }
                 }
             }
-
+            // If hit obstacle while jumping, reset the state from jumping
             if (dynamic_cast<Mario*>(object)->isJumping() && object->getVelocityY() > 0)
                 object->resetState();
+            // Stop if hit obstacle
             else
             {
                 object->setVelocityX(0.0);
                 object->setVelocityY(0.0);
             }
         }
+        // Transport from below pipe to above
         else if (dynamic_cast<Turtle*>(object) != nullptr && map_.getTile(tile_y, tile_x) == TileType::Pipe)
             if (tile_x < 10)
                 dynamic_cast<Turtle*>(object)->setInPipe(0);

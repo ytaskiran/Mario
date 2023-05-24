@@ -14,16 +14,16 @@ public:
 	virtual void move(void) override;					// Moves the Mario sprite in the map
 	void initialize() override;							// Initializes the Mario 
 		
-	bool isJumping();
-	void resetState();
-	float sliding_offset;
+	bool isJumping();									// Return if in jumping state
+	void resetState();									// Reset the state to beginning
+	float sliding_offset;								// Offset for sliding
 
 private:
-	void checkSlide(Direction dir);
+	void checkSlide(Direction dir);						// Function that checks the sliding effect while changing directions
 
-	const float SPEED = _MARIO_SPEED;
-	const float JUMP_SPEED = _MARIO_JUMP_SPEED;
-	const float MAX_SPEED = _MARIO_MAX_SPEED;
-	bool jumping;
-	int movement_acc;
+	const float SPEED = _MARIO_SPEED;					// Default Mario speed
+	const float JUMP_SPEED = _MARIO_JUMP_SPEED;			// Default jump speed
+	const float MAX_SPEED = _MARIO_MAX_SPEED;			// Terminal velocity while falling with gravity
+	bool jumping;										// Variable storing the jumping state
+	int movement_acc;									// Acceleration
 };

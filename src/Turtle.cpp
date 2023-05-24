@@ -1,4 +1,6 @@
 #include "Turtle.h"
+
+// Constructor
 Turtle::Turtle(int initDelay, Direction dir)
 {
 	char path[64];
@@ -14,7 +16,7 @@ Turtle::Turtle(int initDelay, Direction dir)
 	initialize();
 }
 
-
+// Initializes the turtle
 void Turtle::initialize()
 {
 	speed = 3;
@@ -51,8 +53,8 @@ void Turtle::initialize()
 // Update the Turtle velocity, state and heading. Is is called in every frame.
 void Turtle::update(Direction dir)
 {
-	speed += 0.001;
-	speed = std::min(MAX_SPEED_X, speed);
+	speed += 0.001;							// Speed increment by time
+	speed = std::min(MAX_SPEED_X, speed);	// Max speed for the turtle
 	Direction prev_dir = heading;
 	heading = dir;
 
@@ -65,6 +67,7 @@ void Turtle::update(Direction dir)
 		return;
 	}
 
+	// Turtle is in a pipe
 	if (isInPipe) 
 	{
 		if (pipeTimeout == 0)
@@ -121,7 +124,7 @@ void Turtle::update(Direction dir)
 	// If the turtle not in the above states, state diagram works.
 	switch (state)
 	{
-	case 1:
+	case 1: // Running animation
 		if (animation_offset > 0)
 		{
 			animation_offset--;
@@ -149,7 +152,7 @@ void Turtle::update(Direction dir)
 			}
 		}
 		break;
-	case 2:
+	case 2: // Running animation
 		if (animation_offset > 0)
 		{
 			animation_offset--;
@@ -186,7 +189,7 @@ void Turtle::update(Direction dir)
 			}
 		}		
 		break;
-	case 3:
+	case 3: // Running animation 
 		if (animation_offset > 0)
 		{
 			animation_offset--;
@@ -206,8 +209,7 @@ void Turtle::update(Direction dir)
 		}		
 		state = 1;
 		break;
-	case 4:
-		// Surprise state, change directions
+	case 4: // Surprised state, change directions
 		if (surprised)
 		{
 			vx = 0;
@@ -233,7 +235,7 @@ void Turtle::update(Direction dir)
 		}
 		
 		break;
-	case 5:
+	case 5: // Falling state
 		if (flippedOver) 
 		{
 			if (clock.getElapsedTime().asSeconds() >= 8)
@@ -252,16 +254,17 @@ void Turtle::update(Direction dir)
 		break;
 	}
 
+	// Offset for the animation for smoother motion
 	if (animation_offset == 0)
 		animation_offset = _DEF_ANIMATION_OFFSET;
 	animation_offset--;
 
-	vy = std::min<float>(vy + GRAVITY, MAX_SPEED_Y);
+	vy = std::min<float>(vy + GRAVITY, MAX_SPEED_Y); // Terminal velocity 
 
 	sprite.setTexture(textures[state]);
 }
 
-// Moves the turtle one interation, according to the velocity.
+// Moves the turtle one iteration, according to the velocity.
 void Turtle::move()
 {
 	if (pos.x + vx > SCREEN_WIDTH || pos.x + vx < 30) 
@@ -306,11 +309,13 @@ void Turtle::setSurprised()
 	}
 }
 
+// Get if the turtle is surprised
 bool Turtle::getSurprised()
 {
 	return surprised;
 }
 
+// Set the turtle to flip over
 void Turtle::setFlippedOver()
 {
 	vy = -10;
@@ -323,6 +328,7 @@ bool Turtle::getFlippedOver()
 	return flippedOver;
 }
 
+// Set the turtle in pipe
 void Turtle::setInPipe(int PipeDirection)
 {
 	if (!isInPipe)
@@ -346,6 +352,7 @@ void Turtle::setInPipe(int PipeDirection)
 	}
 }
 
+// Get if the turtle is hidden
 bool Turtle::getIsHide() 
 {
 	return isHide;
@@ -372,11 +379,13 @@ void Turtle::changeDirection()
 	}
 }
 
+// Set the initial delay
 void Turtle::setInitDelay(int delay)
 {
 	initDelay = delay;
 }
 
+// Set the heading
 void Turtle::setHeading(Direction dir)
 {
 	heading = dir;

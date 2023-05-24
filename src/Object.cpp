@@ -1,7 +1,7 @@
 #include <Object.h>
 #include <iostream>
 
-
+// Constructor
 Object::Object()
 {
 
@@ -34,73 +34,57 @@ void Object::draw(sf::RenderWindow* window, float x_scale, float y_scale)
 	window->draw(sprite);
 }
 
+// Getter for vx
 float Object::getVelocityX()
 {
 	return vx;
 }
 
+// Getter for vy
 float Object::getVelocityY()
 {
 	return vy;
 }
 
+// Setter for vx
 void Object::setVelocityX(float vel)
 {
 	vx = vel;
 }
 
+// Setter for vy
 void Object::setVelocityY(float vel)
 {
 	vy = vel;
 }
 
+// Return if the object is eliminated
 bool Object::getIsDead()
 {
 	return is_falling;
 }
 
+// Get the heading
 Object::Direction Object::getHeading()
 {
 	return heading;
 }
 
+// Get the previous heading
 Object::Direction Object::getPrevHeading()
 {
 	return prev_heading;
 }
 
+// Set the previous heading
 void Object::setPrevHeading(Object::Direction dir)
 {
 	prev_heading = dir;
 }
 
-
-void Object::update(Direction direction)
-{
-
-}
-
-void Object::move()
-{
-
-}
-
-void Object::fall()
-{
-
-}
-
-void Object::resetState()
-{
-
-}
-
-void Object::jump()
-{
-
-}
-
-void Object::initialize()
-{
-
-}
+void Object::update(Direction direction) { }
+void Object::move() { }
+void Object::fall() { }
+void Object::resetState() { }
+void Object::jump() { }
+void Object::initialize() { }
