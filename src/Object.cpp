@@ -54,6 +54,11 @@ void Object::setVelocityY(float vel)
 	vy = vel;
 }
 
+bool Object::getIsDead()
+{
+	return is_falling;
+}
+
 Object::Direction Object::getHeading()
 {
 	return heading;

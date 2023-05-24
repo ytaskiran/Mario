@@ -19,9 +19,10 @@ public:
 
 	float getVelocityX();
 	float getVelocityY();
-
 	void setVelocityX(float);
 	void setVelocityY(float);
+
+	bool getIsDead();
 
 	// Direction enumaretion class. It is to represent heading of the object.
 	enum class Direction {
@@ -54,4 +55,5 @@ protected:
 	float vx;											// Horizontal speed 
 	float vy;											// Vertical speed
 	size_t animation_offset;							// Makes the motion more smooth by adding a delay between animation changes
+	bool is_falling;
 };

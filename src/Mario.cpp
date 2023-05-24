@@ -217,6 +217,7 @@ void Mario::jump(bool down)
 // Set the Mario State to state 7 (fall state)
 void Mario::fall(void)
 {
+	is_falling = true;
 	state = 7;
 }
 
@@ -236,6 +237,7 @@ void Mario::initializeMario()
 
 	heading = Direction::FIXED;
 	jumping = false;
+	is_falling = false;
 	vx = 0;
 	vy = 0;
 

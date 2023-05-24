@@ -72,13 +72,13 @@ void Game::createTurtles(int num)
         
         if (i % 2 == 0 )
         {
-            turtle = new Turtle(i * 50, Object::Direction::RIGHT);
+            turtle = new Turtle(i * 75, Object::Direction::RIGHT);
             pos.x = 118.0f;
             lastTurtleDir = Object::Direction::LEFT;
         }
         else
         {
-            turtle = new Turtle(i * 50, Object::Direction::LEFT);
+            turtle = new Turtle(i * 75, Object::Direction::LEFT);
             pos.x = 680.0f;
             lastTurtleDir = Object::Direction::RIGHT;
         }
@@ -194,9 +194,6 @@ void Game::updateObjects()
             {
                 object->update(Object::Direction::FIXED);
             }
-
-            onFloor(object);
-            checkObstacle(object);
         }
         else  // Turtle case
         {
@@ -208,12 +205,96 @@ void Game::updateObjects()
                 object->update(Object::Direction::LEFT);
             else
                 dynamic_cast<Turtle*>(object)->changeDirection();
-            
+        }
+
+        if (!object->getIsDead())
+        {
             onFloor(object);
             checkObstacle(object);
         }
 
         object->move();
+    }
+    checkCollusion();
+
+}
+
+void Game::checkCollusion()
+{
+    size_t left = 0;
+    size_t right = 1;
+
+    while (right < objects_.size())
+    {
+        checkCollusion(objects_[left], objects_[right]);
+        right++;
+
+        if (right == objects_.size())
+        {
+            left++;
+            right = left + 1;
+        }
+    }
+}
+
+void Game::checkCollusion(Object* o1, Object* o2)
+{
+    if (o1->getIsDead() || o2->getIsDead())
+        return;
+
+    const float collision_x_offset = 10.f;
+    const float collision_y_offset = 20.f;
+    const float above_collision_offset = 20.f;
+
+    // collision case between mario and turtle
+    if (dynamic_cast<Mario*>(o1) != nullptr)
+    {
+        size_t mario_left     =  o1->sprite.getPosition().x - o1->sprite.getLocalBounds().width / 2 + collision_x_offset;
+        size_t mario_right    =  o1->sprite.getPosition().x + o1->sprite.getLocalBounds().width / 2 - collision_x_offset;
+        size_t mario_top      =  o1->sprite.getPosition().y - o1->sprite.getLocalBounds().height / 2 + collision_y_offset;
+        size_t mario_bottom   =  o1->sprite.getPosition().y + o1->sprite.getLocalBounds().height / 2 - collision_y_offset;
+
+        sf::RectangleShape mario_bounding(sf::Vector2f(mario_right - mario_left, mario_bottom - mario_top));
+        mario_bounding.setPosition(mario_left, mario_top);
+        mario_bounding.setFillColor(sf::Color::Transparent);
+        mario_bounding.setOutlineColor(sf::Color::White);
+        mario_bounding.setOutlineThickness(1);
+
+        size_t turtle_left    =  o2->sprite.getPosition().x - o2->sprite.getLocalBounds().width / 2 + collision_x_offset + 5.f;
+        size_t turtle_right   =  o2->sprite.getPosition().x + o2->sprite.getLocalBounds().width / 2 - collision_x_offset;
+        size_t turtle_top     =  o2->sprite.getPosition().y - o2->sprite.getLocalBounds().height / 2 + collision_y_offset;
+        size_t turtle_bottom  =  o2->sprite.getPosition().y + o2->sprite.getLocalBounds().height / 2 - collision_y_offset;
+
+        sf::RectangleShape turtle_bounding(sf::Vector2f(turtle_right - turtle_left, turtle_bottom - turtle_top));
+        turtle_bounding.setPosition(turtle_left, turtle_top);
+        turtle_bounding.setFillColor(sf::Color::Transparent);
+        turtle_bounding.setOutlineColor(sf::Color::White);
+        turtle_bounding.setOutlineThickness(1);
+
+        /*window_->draw(mario_bounding);
+        window_->draw(turtle_bounding);*/
+
+        if (mario_right < turtle_left || mario_left > turtle_right || mario_bottom < turtle_top || mario_top > turtle_bottom)
+        {
+            return;
+        }
+
+        if (mario_bottom <= turtle_top + above_collision_offset)
+        {
+            o2->fall();
+            std::cout << "Turtle dead!!!" << std::endl;
+        }
+        else
+        {
+            o1->fall();
+            std::cout << "Mario dies!!!" << std::endl;
+        }
+    }
+
+    // 2 turtles case (surprise effect)
+    else
+    {
+        
     }
 }
 

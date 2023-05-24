@@ -30,7 +30,6 @@ private:
 	bool surprised;
 	bool flippedOver;
 	sf::Clock clock;
-	bool isFalling;
 	bool isJumping;
 	bool isInPipe;
 	int initDelay;

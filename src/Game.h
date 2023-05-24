@@ -3,7 +3,6 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <iostream>
-#include <list>
 
 #include "TileMap.h"
 #include "Object.h"
@@ -48,14 +47,15 @@ public:
 private:
 	void drawLives();
 	bool onFloor(Object* object);							// Checks if object is touching a floor surface
-	bool checkCollusion(Turtle* t, Mario* m, int& side);	// Checks if Mario has hit a turtle and from which side
+	void checkCollusion(Object* o1, Object* o2);			// Checks if Mario has hit a turtle and from which side
+	void checkCollusion();
 	void checkObstacle(Object* object);
 	void marioFail();
 
 	sf::RenderWindow* window_;
 	TileMap map_{};
 	ScoreBoard scoreboard_{};
-	std::list<Object*> objects_{};
+	std::vector<Object*> objects_{};
 	sf::Sprite sprite;										// Sprite for general game menu
 	sf::Texture lives_texture;
 	sf::Texture mario_menu;

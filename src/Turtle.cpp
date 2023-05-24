@@ -20,11 +20,12 @@ void Turtle::initializeTurtle()
 	speed = 3;
 	state = 1;
 	animation_offset = _DEF_ANIMATION_OFFSET;
-	isFalling = false;
+	is_falling = false;
 	isJumping = false;
 	flippedOver = false;
 	isInPipe = false;
 	sprite.setTexture(textures[state]);
+	sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);
 	// position iniatilize et. Position dýþardan alabilirsin. Bu durumda initialize fonksiyonunu dýþardan çaðýrýrýz.
 	vy = 10;
 	if (heading == Direction::RIGHT)
@@ -93,7 +94,7 @@ void Turtle::update(Direction dir)
 		}
 	}
 	// Checks turtle is falling or not. If falling, turtle continue to fall, until it leaves the frame.
-	else if (isFalling) 
+	else if (is_falling) 
 	{
 		vx = 0;
 		vy += GRAVITY;
@@ -277,7 +278,8 @@ void Turtle::jump(bool down)
 // Sets the isFalling variable true. It is used to fall Turtle. 
 void Turtle::fall(void)
 {
-	isFalling = true;
+	sprite.setTexture(textures[5]);
+	is_falling = true;
 }
 
 // Resets the turtle state and y velocity. It is used to exit turtle from jump state
