@@ -332,7 +332,7 @@ void Turtle::setInPipe(int PipeDirection)
 
 		if (PipeDirection == 0)
 		{
-			setPosition(sf::Vector2f(100, 510));
+			setPosition(sf::Vector2f(70, 510));
 		}
 		else
 		{
