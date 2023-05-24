@@ -347,7 +347,38 @@ void Game::checkCollusion(Object* o1, Object* o2)
     // 2 turtles case (surprise effect)
     else
     {
+        if (!dynamic_cast<Turtle*>(o1)->getIsHide() && !dynamic_cast<Turtle*>(o2)->getIsHide() &&  o1->boundingBox().intersects(o2->boundingBox()))
+        {
+            dynamic_cast<Turtle*>(o1)->setSurprised();
+            dynamic_cast<Turtle*>(o2)->setSurprised();
+            if (o1->getPosition().x > o2->getPosition().x)
+            {
+                if (!dynamic_cast<Turtle*>(o1)->getSurprised())
+                {
+                    if (o1->getPosition().x + 10 < SCREEN_WIDTH)
+                        o1->setPosition(sf::Vector2f(o1->getPosition().x + 10, o1->getPosition().y));
+                }
+                if (!dynamic_cast<Turtle*>(o1)->getSurprised())
+                {
+                    if (o2->getPosition().x - 5 > 0)
+                        o2->setPosition(sf::Vector2f(o2->getPosition().x - 10, o2->getPosition().y));
+                }
+            }
+            else
+            {
+                if (!dynamic_cast<Turtle*>(o1)->getSurprised())
+                {
+                    if (o1->getPosition().x - 5 > 0)
+                        o1->setPosition(sf::Vector2f(o1->getPosition().x - 10, o1->getPosition().y));
+                }
+                if (!dynamic_cast<Turtle*>(o1)->getSurprised())
+                {
+                    if (o2->getPosition().x + 10 < SCREEN_WIDTH)
+                        o2->setPosition(sf::Vector2f(o2->getPosition().x + 10, o2->getPosition().y));
+                }
+            }
         
+        }
     }
 }
 

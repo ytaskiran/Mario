@@ -17,11 +17,13 @@ public:
 	
 	void resetState();
 	void setSurprised();
+	bool getSurprised();
 	void setFlippedOver();
 	bool getFlippedOver();
 	void setInPipe(int PipeDirection);
 	bool getIsHide();
 	void changeDirection();
+	bool getFlippedOver();
 	void setInitDelay(int);
 	void setHeading(Direction);
 
