@@ -13,6 +13,7 @@ public:
 	virtual void move() override;						// Moves turtle left or right
 	virtual void jump() override;						// Makes turtle jump 
 	virtual void fall(void) override;					// Makes turtle fall when it dies
+	virtual void initialize() override;					// Initializes the turtles
 	
 	void resetState();
 	void setSurprised();
@@ -21,10 +22,11 @@ public:
 	void setInPipe(int PipeDirection);
 	bool getIsHide();
 	void changeDirection();
+	void setInitDelay(int);
+	void setHeading(Direction);
 
 private:
 	float speed; 
-	void initializeTurtle();
 	const int STEP = 1;
 	bool waitedOneSecond;
 	bool surprised;

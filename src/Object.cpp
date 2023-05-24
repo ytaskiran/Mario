@@ -99,3 +99,8 @@ void Object::jump()
 {
 
 }
+
+void Object::initialize()
+{
+
+}

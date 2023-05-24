@@ -37,6 +37,12 @@ int main()
         // Clear screen
         window.clear();
 
+        if (game.getRemainingLives() == 0)
+            game.status = Game::Status::GameOver;
+
+        else if (game.getScore() == 500)
+            game.status = Game::Status::Won;
+
         if (game.status == Game::Status::MainMenu)
         {
             window.clear(sf::Color(18, 23, 53));

@@ -95,14 +95,12 @@ void Game::createTurtles(int num)
             // i * 50 : Delay time for initializing in map
             turtle = new Turtle(i * 100 + 10, Object::Direction::RIGHT);
             pos.x = 118.0f;
-            lastTurtleDir = Object::Direction::LEFT;
         }
         else
         {
             // i * 50 : Delay time for initializing in map
             turtle = new Turtle(i * 100 + 5, Object::Direction::LEFT);
             pos.x = 680.0f;
-            lastTurtleDir = Object::Direction::RIGHT;
         }
 
         // Sets the turtle initial pos according to right or left initialization
@@ -145,7 +143,17 @@ int Game::mainMenu()
     return 0;
 }
 
-// Chekcs given object is on floor or not
+int Game::getScore()
+{
+    return scoreboard_.getScore();
+}
+
+int Game::getRemainingLives()
+{
+    return scoreboard_.getLives();
+}
+
+// Checks given object is on floor or not
 bool Game::onFloor(Object* object)
 {
     float x_pixel{};
@@ -181,7 +189,11 @@ bool Game::onFloor(Object* object)
     if ((map_.getTile(tile0_y, tile0_x) == TileType::Floor or map_.getTile(tile1_y, tile1_x) == TileType::Floor or
          map_.getTile(tile0_y, tile0_x) == TileType::Brick or map_.getTile(tile1_y, tile1_x) == TileType::Brick) and object->getVelocityY() > 0)
     {
-        object->sprite.setPosition(object->sprite.getPosition().x, tile0_y * TileMap::TILE_SIZE - 30); // consistent movement
+        if (dynamic_cast<Mario*>(object) != nullptr)
+            object->sprite.setPosition(object->sprite.getPosition().x, tile0_y * TileMap::TILE_SIZE - 30); // consistent movement
+        else if (dynamic_cast<Turtle*>(object) != nullptr)
+            object->sprite.setPosition(object->sprite.getPosition().x, tile0_y * TileMap::TILE_SIZE - 20); // consistent movement
+
         object->setVelocityY(0);   
         if (dynamic_cast<Mario*>(object) != nullptr && dynamic_cast<Mario*>(object)->isJumping())
         if (dynamic_cast<Mario*>(object) != nullptr &&dynamic_cast<Mario*>(object)->isJumping())
@@ -200,6 +212,12 @@ void Game::updateObjects()
         auto pos = object->getPosition();
         if (dynamic_cast<Mario*>(object) != nullptr)
         {
+            if (marioFail(dynamic_cast<Mario*>(object)))
+            {
+                restartGame();
+                return;
+            }
+
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
             {
                 object->jump();
@@ -420,6 +438,50 @@ void Game::checkObstacle(Object* object)
             else if (tile_x > 40)
                 dynamic_cast<Turtle*>(object)->setInPipe(1);
     }
+}
+
+void Game::restartGame()
+{
+    for (int i = 0; i < objects_.size(); i++)
+    {
+        if (dynamic_cast<Turtle*>(objects_[i]) != nullptr)
+        {
+            Turtle* turtle = dynamic_cast<Turtle*>(objects_[i]);
+
+            sf::Vector2f pos;
+            pos.y = 75.0f;
+
+            // Turtles initialized left and right in turn
+            if (i % 2 == 0)
+            {
+                turtle->setInitDelay((i - 1) * 100 + 10);
+                turtle->setHeading(Object::Direction::RIGHT);
+                pos.x = 118.0f;
+            }
+            else
+            {
+                turtle->setInitDelay((i - 1) * 100 + 5);
+                turtle->setHeading(Object::Direction::LEFT);
+                pos.x = 680.0f;
+            }
+
+            // Sets the turtle initial pos according to right or left initialization
+            turtle->setPosition(pos);
+        }
+        objects_[i]->initialize();
+    }
+
+    scoreboard_.setScore(0);
+}
+
+bool Game::marioFail(Mario* m)
+{
+    if (m->getIsDead() && m->sprite.getPosition().y > SCREEN_HEIGHT * 3)
+    {
+        return true;
+    }
+
+    return false;
 }
 
 // Destructor funtion to delete dynamic allocated objects

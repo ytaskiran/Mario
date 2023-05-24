@@ -33,6 +33,8 @@ public:
 	void createTurtles(int);
 	void updateObjects();
 	int mainMenu();
+	int getScore();
+	int getRemainingLives();
 	~Game();
 
 	enum class Status
@@ -51,7 +53,8 @@ private:
 	void checkCollusion(Object* o1, Object* o2);			// Checks if Mario has hit a turtle and from which side
 	void checkCollusion();
 	void checkObstacle(Object* object);
-	void marioFail();
+	bool marioFail(Mario* m);
+	void restartGame();
 
 	sf::RenderWindow* window_;
 	TileMap map_{};
@@ -61,7 +64,6 @@ private:
 	sf::Texture lives_texture;
 	sf::Texture mario_menu;
 	sf::Font font;
-	Object::Direction lastTurtleDir;
 
 	const size_t MARIO_MAX_LIVES = _MARIO_MAX_LIVES;
 };

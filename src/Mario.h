@@ -11,13 +11,14 @@ public:
 	virtual void update(Direction direction) override;	// Moves Mario left or right
 	virtual void jump() override;						// Makes Mario jump 
 	virtual void fall(void) override;					// Makes Mario fall straight down when he dies
-	virtual void move(void) override;
+	virtual void move(void) override;					// Moves the Mario sprite in the map
+	void initialize() override;							// Initializes the Mario 
+		
 	bool isJumping();
 	void resetState();
 	float sliding_offset;
 
 private:
-	void initializeMario();
 	void checkSlide(Direction dir);
 
 	const float SPEED = _MARIO_SPEED;

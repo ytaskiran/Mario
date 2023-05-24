@@ -11,11 +11,11 @@ Turtle::Turtle(int initDelay, Direction dir)
 
 	this->heading = dir;
 	this->initDelay = initDelay;
-	initializeTurtle();
+	initialize();
 }
 
 
-void Turtle::initializeTurtle()
+void Turtle::initialize()
 {
 	speed = 3;
 	state = 1;
@@ -338,4 +338,14 @@ void Turtle::changeDirection()
 	{
 		update(Direction::FIXED);
 	}
+}
+
+void Turtle::setInitDelay(int delay)
+{
+	initDelay = delay;
+}
+
+void Turtle::setHeading(Direction dir)
+{
+	heading = dir;
 }

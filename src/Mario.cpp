@@ -11,7 +11,7 @@ Mario::Mario()
 		textures[i].loadFromFile(path);
 	}
 
-	initializeMario();
+	initialize();
 }
 
 // Update the state and velocity of the Mario, according to the given direction.
@@ -223,7 +223,7 @@ void Mario::resetState()
 }
 
 // Initializes variables of Mario class. It is used in Constructor and restart functions.
-void Mario::initializeMario() 
+void Mario::initialize() 
 {
 	pos.x = 400.0f;
 	pos.y = 450.0f;
